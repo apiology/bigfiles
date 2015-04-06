@@ -1,5 +1,8 @@
 require 'simplecov'
-SimpleCov.start
+SimpleCov.start do
+  # this dir used by TravisCI
+  add_filter 'vendor'
+end
 SimpleCov.refuse_coverage_drop
 require 'bigfiles'
 
