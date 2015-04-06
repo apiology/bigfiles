@@ -6,7 +6,8 @@ describe 'bigfiles' do
       .to eq("USAGE: bigfiles [-n <top n files>]\n")
   end
 
-  # three_files one_file two_files many_files zero_byte_file
+  # three_files one_file two_files some_nonsource_files many_files
+  # zero_byte_file
   %w(no_files).each do |type|
     it "handles #{type} case" do
       expect(exec_io "cd feature/samples/#{type} &&" \
