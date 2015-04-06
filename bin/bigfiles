@@ -1,3 +1,8 @@
 #!/usr/bin/env ruby
 
-puts "USAGE: bigfiles [-n <top n files>]\n" if ARGV[0] == '-h'
+def usage
+  puts "USAGE: bigfiles [-n <top n files>]\n"
+  exit 1
+end
+
+usage if ARGV[0] == '-h'
