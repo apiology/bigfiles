@@ -24,7 +24,7 @@ describe BigFiles do
     end
 
     describe '.run' do
-      def expect_file_queried(file, filename:, num_lines:)
+      def expect_file_queried(file, filename: fail, num_lines: fail)
         allow(file).to receive(:num_lines).and_return(num_lines)
         allow(file).to receive(:filename).and_return(filename)
       end
