@@ -11,6 +11,8 @@ class SourceCodeFinder
     @filefind.find('.') do |path|
       files << path if path =~ /.*\.rb$/
     end
-    files
+    files.map do |filename|
+      filename.sub(/^.\//, '')
+    end
   end
 end

@@ -1,11 +1,12 @@
 require_relative 'source_code_finder'
+require_relative 'file_with_lines'
 
 # Simple tool to find the largest source files in your project.
 class BigFiles
   def initialize(args,
                  io: Kernel,
                  exiter: Kernel,
-                 file_with_lines: nil,
+                 file_with_lines: FileWithLines,
                  source_file_finder: SourceCodeFinder.new)
     @args = args
     @io = io
@@ -24,7 +25,7 @@ class BigFiles
     files_with_lines = file_list.map do |filename|
       @file_with_lines.new(filename)
     end
-    files_with_lines.sort.each do |file|
+    files_with_lines.sort.reverse.each do |file|
       @io.puts "#{file.num_lines}: #{file.filename}"
     end
   end

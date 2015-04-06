@@ -29,21 +29,21 @@ describe BigFiles do
         allow(file).to receive(:filename).and_return(filename)
       end
 
-      def expect_file_processed(filename)
+      def expect_file_processed(filename, num_lines)
         file = double("#{filename} file_with_lines")
         expect(file_with_lines).to(receive(:new)).with(filename)
           .and_return(file)
-        num_lines = 12
         expect_file_queried(file, filename: filename, num_lines: num_lines)
         expect(io).to receive(:puts).with("#{num_lines}: #{filename}")
+        file
       end
 
       it 'should run' do
-        file_list = ['file_1']
+        file_list = %w(file_1 file_2)
         expect(source_file_finder).to receive(:find).and_return(file_list)
-        file_list.each do |filename|
-          expect_file_processed(filename)
-        end
+        file_1 = expect_file_processed('file_1', 1)
+        file_2 = expect_file_processed('file_2', 2)
+        expect(file_1).to receive(:<=>).with(file_2).and_return(1)
         bigfiles.run
       end
     end
