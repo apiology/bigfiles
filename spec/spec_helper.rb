@@ -1,7 +1,7 @@
 require 'simplecov'
 SimpleCov.start
 SimpleCov.refuse_coverage_drop
-require 'yourmodulehere'
+require 'bigfiles'
 
 RSpec.configure do |config|
   config.run_all_when_everything_filtered = true

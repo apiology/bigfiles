@@ -10,7 +10,7 @@ describe 'bigfiles' do
   %w(no_files).each do |type|
     it "handles #{type} case" do
       expect(exec_io "cd feature/samples/#{type} &&" \
-                     'bigfiles -n 3')
+                     'RUBYLIB=`pwd`/../../lib bigfiles -n 3')
         .to eq(IO.read("feature/expected/#{type}_results.txt"))
     end
   end

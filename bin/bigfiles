@@ -1,8 +1,5 @@
 #!/usr/bin/env ruby
 
-def usage
-  puts "USAGE: bigfiles [-n <top n files>]\n"
-  exit 1
-end
+require_relative '../lib/bigfiles'
 
-usage if ARGV[0] == '-h'
+BigFiles.new(ARGV).run
