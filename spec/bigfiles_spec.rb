@@ -2,17 +2,17 @@
 require 'spec_helper'
 require 'bigfiles'
 
-describe BigFiles do
+describe BigFiles::BigFiles do
   subject(:io) { double('io') }
   subject(:exiter) { double('exiter') }
   subject(:file_with_lines) { double('file_with_lines') }
   subject(:source_file_finder) { double('source_file_finder') }
   subject(:bigfiles) do
-    BigFiles.new(args,
-                 io: io,
-                 exiter: exiter,
-                 file_with_lines: file_with_lines,
-                 source_file_finder: source_file_finder)
+    BigFiles::BigFiles.new(args,
+                           io: io,
+                           exiter: exiter,
+                           file_with_lines: file_with_lines,
+                           source_file_finder: source_file_finder)
   end
 
   context 'With no arguments' do

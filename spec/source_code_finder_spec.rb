@@ -2,9 +2,11 @@
 require 'spec_helper'
 require 'bigfiles'
 
-describe SourceCodeFinder do
+describe BigFiles::SourceCodeFinder do
   subject(:filefind) { double('filefind') }
-  subject(:source_file_finder) { SourceCodeFinder.new(filefind: filefind) }
+  subject(:source_file_finder) do
+    BigFiles::SourceCodeFinder.new(filefind: filefind)
+  end
 
   context 'With no files in directory' do
     describe '#find' do

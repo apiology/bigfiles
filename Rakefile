@@ -1,5 +1,6 @@
 require 'rspec/core/rake_task'
 require 'quality/rake/task'
+require 'bundler/gem_tasks'
 
 Quality::Rake::Task.new do |task|
   task.skip_tools = ['reek']

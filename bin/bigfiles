@@ -2,4 +2,4 @@
 
 require_relative '../lib/bigfiles'
 
-BigFiles.new(ARGV).run
+BigFiles::BigFiles.new(ARGV).run

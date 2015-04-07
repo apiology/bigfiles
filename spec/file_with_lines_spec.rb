@@ -2,11 +2,11 @@
 require 'spec_helper'
 require 'bigfiles'
 
-describe FileWithLines do
+describe BigFiles::FileWithLines do
   let_double :filename, :file_opener
   subject(:file_with_lines) do
-    FileWithLines.new(filename,
-                      file_opener: file_opener)
+    BigFiles::FileWithLines.new(filename,
+                                file_opener: file_opener)
   end
 
   context 'With a filename' do
@@ -19,8 +19,8 @@ describe FileWithLines do
     describe '#<=>' do
       let_double :spaceship_result, :another_filename
       subject(:another_file_with_lines) do
-        FileWithLines.new(another_filename,
-                          file_opener: file_opener)
+        BigFiles::FileWithLines.new(another_filename,
+                                    file_opener: file_opener)
       end
       it 'is sortable' do
         expect(file_with_lines).to(receive(:num_lines))
