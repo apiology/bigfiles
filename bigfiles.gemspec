@@ -11,12 +11,12 @@ Gem::Specification.new do |s|
   s.description = 'bigfiles finds the largest source files in your project ' \
                   'and reports on them'
   s.email = ['vince@broz.cc']
-  # s.executables = ["bigfiles"]
+  s.executables = ['bigfiles']
   # s.extra_rdoc_files = ["CHANGELOG", "License.txt"]
   s.license = 'MIT'
   s.files = Dir['License.txt', 'README.md',
                 'Rakefile',
-                # "bin/bigfiles",
+                'bin/bigfiles',
                 '{lib}/**/*',
                 'bigfiles.gemspec'] & `git ls-files -z`.split("\0")
   # s.rdoc_options = ["--main", "README.md"]
