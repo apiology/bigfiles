@@ -8,7 +8,7 @@ describe 'bigfiles' do
 
   # three_files one_file two_files some_nonsource_files many_files
   # zero_byte_file
-  %w(no_files three_files).each do |type|
+  %w(no_files three_files four_files).each do |type|
     it "handles #{type} case" do
       expect(exec_io "cd feature/samples/#{type} &&" \
                      'RUBYLIB=`pwd`/../../lib:"$RUBYLIB" bigfiles -n 3')

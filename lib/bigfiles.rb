@@ -25,7 +25,7 @@ class BigFiles
     files_with_lines = file_list.map do |filename|
       @file_with_lines.new(filename)
     end
-    files_with_lines.sort.reverse.each do |file|
+    files_with_lines.sort.reverse[0..2].each do |file|
       @io.puts "#{file.num_lines}: #{file.filename}"
     end
   end
