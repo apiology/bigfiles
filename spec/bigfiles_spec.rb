@@ -15,37 +15,41 @@ describe BigFiles::BigFiles do
                            source_file_finder: source_file_finder)
   end
 
-  context 'With no arguments' do
-    subject(:args) { [''] }
-    describe '#new' do
-      it 'should initialize' do
-        subject
-      end
-    end
-
-    describe '.run' do
-      def expect_file_queried(file, filename: fail, num_lines: fail)
-        allow(file).to receive(:num_lines).and_return(num_lines)
-        allow(file).to receive(:filename).and_return(filename)
+  [nil, '*/*.{rb,swift}'].each do |glob|
+    context "With glob of #{glob}" do
+      subject(:args) { glob.nil? ? [] : ['--glob', glob] }
+      describe '#new' do
+        it 'should initialize' do
+          subject
+        end
       end
 
-      def expect_file_processed(filename, num_lines)
-        file = double("#{filename} file_with_lines")
-        expect(file_with_lines).to(receive(:new)).with(filename)
-          .and_return(file)
-        expect_file_queried(file, filename: filename, num_lines: num_lines)
-        expect(io).to receive(:puts).with("#{num_lines}: #{filename}")
-        file
-      end
+      describe '.run' do
+        def expect_file_queried(file, filename: fail, num_lines: fail)
+          allow(file).to receive(:num_lines).and_return(num_lines)
+          allow(file).to receive(:filename).and_return(filename)
+        end
 
-      it 'should run' do
-        file_list = %w(file_1 file_2)
-        expect(source_file_finder).to receive(:find).and_return(file_list)
-        file_1 = expect_file_processed('file_1', 1)
-        file_2 = expect_file_processed('file_2', 2)
-        expect(file_1).to receive(:<=>).with(file_2).and_return(1)
-        allow(file_2).to receive(:<=>).with(file_1).and_return(-1)
-        bigfiles.run
+        def expect_file_processed(filename, num_lines)
+          file = double("#{filename} file_with_lines")
+          expect(file_with_lines).to(receive(:new)).with(filename)
+            .and_return(file)
+          expect_file_queried(file, filename: filename, num_lines: num_lines)
+          expect(io).to receive(:puts).with("#{num_lines}: #{filename}")
+          file
+        end
+
+        it 'should run' do
+          file_list = %w(file_1 file_2)
+          actual_glob = glob || BigFiles::BigFiles::DEFAULT_GLOB
+          expect(source_file_finder).to(receive(:find)).with(actual_glob)
+            .and_return(file_list)
+          file_1 = expect_file_processed('file_1', 1)
+          file_2 = expect_file_processed('file_2', 2)
+          expect(file_1).to receive(:<=>).with(file_2).and_return(1)
+          allow(file_2).to receive(:<=>).with(file_1).and_return(-1)
+          bigfiles.run
+        end
       end
     end
   end
