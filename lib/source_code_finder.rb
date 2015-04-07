@@ -9,7 +9,7 @@ class SourceCodeFinder
   def find
     files = []
     @filefind.find('.') do |path|
-      files << path if path =~ /.*\.rb$/
+      files << path if path =~ /.*\.rb$/ || path =~ /.*\.swift$/
     end
     files.map do |filename|
       filename.sub(/^.\//, '')

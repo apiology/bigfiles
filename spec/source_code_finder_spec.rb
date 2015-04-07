@@ -8,10 +8,18 @@ describe SourceCodeFinder do
 
   context 'With no files in directory' do
     describe '#find' do
-      it 'should find a ruby file' do
-        files = ['foo.rb']
-        expect(filefind).to receive(:find).with('.').and_yield('foo.rb')
+      def it_should_find(filename)
+        files = [filename]
+        expect(filefind).to receive(:find).with('.').and_yield(filename)
         expect(source_file_finder.find).to eq(files)
+      end
+
+      it 'should find a ruby file' do
+        it_should_find('foo.rb')
+      end
+
+      it 'should find a swift file' do
+        it_should_find('bar.swift')
       end
 
       it 'should not find a dummy file' do
