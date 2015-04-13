@@ -46,7 +46,7 @@ describe BigFiles::BigFiles do
             .and_return(file_list)
           file_1 = expect_file_processed('file_1', 1)
           file_2 = expect_file_processed('file_2', 2)
-          expect(file_1).to receive(:<=>).with(file_2).and_return(1)
+          allow(file_1).to receive(:<=>).with(file_2).and_return(1)
           allow(file_2).to receive(:<=>).with(file_1).and_return(-1)
           bigfiles.run
         end
