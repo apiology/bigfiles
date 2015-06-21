@@ -3,7 +3,11 @@ require_relative 'feature_helper'
 describe 'bigfiles' do
   it 'starts up with no arguments' do
     expect(exec_io 'bigfiles -h')
-      .to eq("USAGE: bigfiles [-n <top n files>]\n")
+      .to eq("Usage: bigfiles [options]\n" \
+             '    -g, --glob glob here             ' \
+             'Which files to parse - default is ' \
+             "{app,lib,test,spec,feature}/**/*.{rb,swift,cpp,c,java,py}\n" \
+             "    -h, --help                       This message\n")
   end
 
   # three_files one_file two_files some_nonsource_files many_files

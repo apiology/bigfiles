@@ -12,17 +12,18 @@ module BigFiles
                    exiter: Kernel,
                    file_with_lines: FileWithLines,
                    source_file_finder: SourceCodeFinder.new,
-                   option_parser: OptionParser)
+                   option_parser_class: OptionParser)
       @io, @exiter, @file_with_lines = io, exiter, file_with_lines
       @source_file_finder = source_file_finder
-      @option_parser = option_parser
+      @option_parser_class = option_parser_class
       @options = parse_options(args)
     end
 
     def parse_options(args)
       options = nil
-      @option_parser.new do |opts|
+      @option_parser_class.new do |opts|
         options = setup_options(opts)
+        @option_parser = opts
       end.parse!(args)
       options
     end
@@ -48,7 +49,7 @@ module BigFiles
     end
 
     def usage
-      @io.puts "USAGE: bigfiles [-n <top n files>]\n"
+      @io.puts @option_parser
       @exiter.exit 1
     end
 
