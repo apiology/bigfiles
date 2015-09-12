@@ -15,9 +15,18 @@ describe BigFiles::BigFiles do
                            source_file_finder: source_file_finder)
   end
 
-  [nil, '*/*.{rb,swift}'].each do |glob|
+  [{ glob: nil, exclude: nil },
+   { glob: '*/*.{rb,swift}', exclude: '*/foo.rb' }].each do |config|
+    glob = config[:glob]
+    exclude_glob = config[:exclude]
     context "With glob of #{glob}" do
-      subject(:args) { glob.nil? ? [] : ['--glob', glob] }
+      subject(:args) do
+        args = []
+        args += ['--glob', glob] unless glob.nil?
+        args += ['--exclude', exclude_glob] unless exclude_glob.nil?
+        args
+      end
+
       describe '#new' do
         it 'should initialize' do
           subject
@@ -42,7 +51,9 @@ describe BigFiles::BigFiles do
         it 'should run' do
           file_list = %w(file_1 file_2)
           actual_glob = glob || BigFiles::BigFiles::DEFAULT_GLOB
-          expect(source_file_finder).to(receive(:find)).with(actual_glob)
+          actual_exclude_glob = exclude_glob || ''
+          expect(source_file_finder).to(receive(:find))
+            .with(actual_glob, actual_exclude_glob)
             .and_return(file_list)
           file_1 = expect_file_processed('file_1', 1)
           file_2 = expect_file_processed('file_2', 2)

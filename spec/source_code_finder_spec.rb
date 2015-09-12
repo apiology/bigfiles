@@ -11,13 +11,20 @@ describe BigFiles::SourceCodeFinder do
   end
 
   context 'With no files in directory' do
-    let_double :glob
+    let_double :glob, :exclude_glob
 
     describe '#find' do
+      def expect_glob_returns(glob, results)
+        expect(globber).to(receive(:glob)).with(glob)
+          .and_return(results)
+      end
+
       def it_should_find(filename)
         files = [filename]
-        expect(globber).to receive(:glob).with(glob).and_return(files)
-        expect(source_file_finder.find(glob)).to eq(files)
+        exclude_files = ['not here']
+        expect_glob_returns(exclude_glob, exclude_files)
+        expect_glob_returns(glob, files)
+        expect(source_file_finder.find(glob, exclude_glob)).to eq(files)
       end
 
       it 'should find a ruby file' do
@@ -30,7 +37,8 @@ describe BigFiles::SourceCodeFinder do
 
       it 'should not find a dummy file' do
         expect(globber).to receive(:glob).with(glob).and_return([])
-        expect(source_file_finder.find(glob)).to eq([])
+        expect(globber).to receive(:glob).with(exclude_glob).and_return([])
+        expect(source_file_finder.find(glob, exclude_glob)).to eq([])
       end
     end
   end

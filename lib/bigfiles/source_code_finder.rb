@@ -9,8 +9,8 @@ module BigFiles
       @globber = globber
     end
 
-    def find(glob)
-      @globber.glob(glob)
+    def find(glob, exclude_glob)
+      @globber.glob(glob) - @globber.glob(exclude_glob)
     end
   end
 end

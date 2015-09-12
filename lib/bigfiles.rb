@@ -35,16 +35,36 @@ module BigFiles
       @options[:glob] || DEFAULT_GLOB
     end
 
-    def setup_options(opts)
-      options = {}
-      opts.banner = 'Usage: bigfiles [options]'
+    def exclude_glob
+      @options[:exclude] || ''
+    end
+
+    def add_glob_option(opts, options)
       opts.on('-g glob here', '--glob',
               "Which files to parse - default is #{DEFAULT_GLOB}") do |v|
         options[:glob] = v
       end
+    end
+
+    def add_exclude_glob_option(opts, options)
+      opts.on('-e glob here', '--exclude-glob',
+              'Files to exclude - default is none') do |v|
+        options[:exclude] = v
+      end
+    end
+
+    def add_help_option(opts, options)
       opts.on('-h', '--help', 'This message') do |_|
         options[:help] = true
       end
+    end
+
+    def setup_options(opts)
+      options = {}
+      opts.banner = 'Usage: bigfiles [options]'
+      add_glob_option(opts, options)
+      add_exclude_glob_option(opts, options)
+      add_help_option(opts, options)
       options
     end
 
@@ -54,7 +74,7 @@ module BigFiles
     end
 
     def find_analyze_and_report_on_files
-      file_list = @source_file_finder.find(glob)
+      file_list = @source_file_finder.find(glob, exclude_glob)
       files_with_lines = file_list.map do |filename|
         @file_with_lines.new(filename)
       end
