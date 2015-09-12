@@ -13,7 +13,9 @@ module BigFiles
                    file_with_lines: FileWithLines,
                    source_file_finder: SourceCodeFinder.new,
                    option_parser_class: OptionParser)
-      @io, @exiter, @file_with_lines = io, exiter, file_with_lines
+      @io = io
+      @exiter = exiter
+      @file_with_lines = file_with_lines
       @source_file_finder = source_file_finder
       @option_parser_class = option_parser_class
       @options = parse_options(args)

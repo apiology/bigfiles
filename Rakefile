@@ -16,7 +16,7 @@ end
 desc 'Run features'
 RSpec::Core::RakeTask.new(:feature) do |task|
   task.pattern = 'feature/**/*_spec.rb'
-  task.rspec_opts = "--format doc"
+  task.rspec_opts = '--format doc'
 end
 
 task :clear_metrics do |_t|
