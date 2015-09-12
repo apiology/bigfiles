@@ -3,16 +3,14 @@ require 'spec_helper'
 require 'bigfiles'
 
 describe BigFiles::BigFiles do
-  subject(:io) { double('io') }
-  subject(:exiter) { double('exiter') }
-  subject(:file_with_lines) { double('file_with_lines') }
-  subject(:source_file_finder) { double('source_file_finder') }
+  let_double :io, :exiter, :file_with_lines, :source_file_globber
+
   subject(:bigfiles) do
     BigFiles::BigFiles.new(args,
                            io: io,
                            exiter: exiter,
                            file_with_lines: file_with_lines,
-                           source_file_finder: source_file_finder)
+                           source_file_globber: source_file_globber)
   end
 
   [{ glob: nil, exclude: nil },
@@ -48,13 +46,24 @@ describe BigFiles::BigFiles do
           file
         end
 
-        it 'should run' do
-          file_list = %w(file_1 file_2)
+        def expect_globs_assigned(glob, exclude_glob)
           actual_glob = glob || BigFiles::BigFiles::DEFAULT_GLOB
           actual_exclude_glob = exclude_glob || ''
-          expect(source_file_finder).to(receive(:find))
-            .with(actual_glob, actual_exclude_glob)
+          expect(source_file_globber).to(receive(:source_files_glob=))
+            .with(actual_glob)
+          expect(source_file_globber).to(receive(:source_files_exclude_glob=))
+            .with(actual_exclude_glob)
+        end
+
+        def expect_source_globber_used(glob, exclude_glob)
+          file_list = %w(file_1 file_2)
+          expect_globs_assigned(glob, exclude_glob)
+          expect(source_file_globber).to(receive(:source_files))
             .and_return(file_list)
+        end
+
+        it 'should run' do
+          expect_source_globber_used(glob, exclude_glob)
           file_1 = expect_file_processed('file_1', 1)
           file_2 = expect_file_processed('file_2', 2)
           allow(file_1).to receive(:<=>).with(file_2).and_return(1)

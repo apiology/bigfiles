@@ -1,10 +1,7 @@
 require 'optparse'
 
-require_relative 'bigfiles/source_code_finder'
 require_relative 'bigfiles/file_with_lines'
-
-# XXX: Take out source_file_globber.rb from quality into its own gem
-# and start building on that.
+require 'source_finder/source_file_globber'
 
 # Simple tool to find the largest source files in your project.
 module BigFiles
@@ -14,12 +11,12 @@ module BigFiles
                    io: Kernel,
                    exiter: Kernel,
                    file_with_lines: FileWithLines,
-                   source_file_finder: SourceCodeFinder.new,
+                   source_file_globber: SourceFinder::SourceFileGlobber.new,
                    option_parser_class: OptionParser)
       @io = io
       @exiter = exiter
       @file_with_lines = file_with_lines
-      @source_file_finder = source_file_finder
+      @source_file_globber = source_file_globber
       @option_parser_class = option_parser_class
       @options = parse_options(args)
     end
@@ -33,6 +30,7 @@ module BigFiles
       options
     end
 
+    # XXX: Move to using SourceFinder for this
     DEFAULT_GLOB =
       '{app,lib,test,spec,feature}/**/*.{rb,swift,cpp,c,java,py}'
 
@@ -79,7 +77,9 @@ module BigFiles
     end
 
     def find_analyze_and_report_on_files
-      file_list = @source_file_finder.find(glob, exclude_glob)
+      @source_file_globber.source_files_glob = glob
+      @source_file_globber.source_files_exclude_glob = exclude_glob
+      file_list = @source_file_globber.source_files
       files_with_lines = file_list.map do |filename|
         @file_with_lines.new(filename)
       end
