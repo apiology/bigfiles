@@ -3,6 +3,9 @@ require 'optparse'
 require_relative 'bigfiles/source_code_finder'
 require_relative 'bigfiles/file_with_lines'
 
+# XXX: Take out source_file_globber.rb from quality into its own gem
+# and start building on that.
+
 # Simple tool to find the largest source files in your project.
 module BigFiles
   # Simple tool to find the largest source files in your project.
