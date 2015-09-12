@@ -46,9 +46,17 @@ describe BigFiles::BigFiles do
           file
         end
 
+        def default_glob
+          '{Rakefile,Dockerfile,{*,.*}.' \
+          '{rb,rake,gemspec,swift,cpp,c,java,py,clj,cljs,scala,js,yml,' \
+          'sh,json},{src,app,lib,test,spec,feature}/**/{*,.*}.' \
+          '{rb,rake,gemspec,swift,cpp,c,java,py,clj,cljs,' \
+          'scala,js,yml,sh,json}}'
+        end
+
         def expect_globs_assigned(glob, exclude_glob)
-          actual_glob = glob || BigFiles::BigFiles::DEFAULT_GLOB
-          actual_exclude_glob = exclude_glob || ''
+          actual_glob = glob || default_glob
+          actual_exclude_glob = exclude_glob || '{}'
           expect(source_file_globber).to(receive(:source_files_glob=))
             .with(actual_glob)
           expect(source_file_globber).to(receive(:source_files_exclude_glob=))

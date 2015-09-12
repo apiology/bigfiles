@@ -2,6 +2,7 @@ require 'optparse'
 
 require_relative 'bigfiles/file_with_lines'
 require 'source_finder/source_file_globber'
+require 'source_finder/option_parser'
 
 # Simple tool to find the largest source files in your project.
 module BigFiles
@@ -12,12 +13,14 @@ module BigFiles
                    exiter: Kernel,
                    file_with_lines: FileWithLines,
                    source_file_globber: SourceFinder::SourceFileGlobber.new,
-                   option_parser_class: OptionParser)
+                   option_parser_class: OptionParser,
+                   source_finder_option_parser: SourceFinder::OptionParser.new)
       @io = io
       @exiter = exiter
       @file_with_lines = file_with_lines
       @source_file_globber = source_file_globber
       @option_parser_class = option_parser_class
+      @source_finder_option_parser = source_finder_option_parser
       @options = parse_options(args)
     end
 
@@ -30,30 +33,13 @@ module BigFiles
       options
     end
 
-    # XXX: Move to using SourceFinder for this
-    DEFAULT_GLOB =
-      '{app,lib,test,spec,feature}/**/*.{rb,swift,cpp,c,java,py}'
-
     def glob
-      @options[:glob] || DEFAULT_GLOB
+      @options[:glob] || @source_finder_option_parser.default_source_files_glob
     end
 
     def exclude_glob
-      @options[:exclude] || ''
-    end
-
-    def add_glob_option(opts, options)
-      opts.on('-g glob here', '--glob',
-              "Which files to parse - default is #{DEFAULT_GLOB}") do |v|
-        options[:glob] = v
-      end
-    end
-
-    def add_exclude_glob_option(opts, options)
-      opts.on('-e glob here', '--exclude-glob',
-              'Files to exclude - default is none') do |v|
-        options[:exclude] = v
-      end
+      @options[:exclude] ||
+        @source_finder_option_parser.default_source_files_exclude_glob
     end
 
     def add_help_option(opts, options)
@@ -65,8 +51,7 @@ module BigFiles
     def setup_options(opts)
       options = {}
       opts.banner = 'Usage: bigfiles [options]'
-      add_glob_option(opts, options)
-      add_exclude_glob_option(opts, options)
+      @source_finder_option_parser.add_options(opts, options)
       add_help_option(opts, options)
       options
     end

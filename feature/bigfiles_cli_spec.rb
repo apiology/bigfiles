@@ -6,7 +6,11 @@ describe 'bigfiles' do
       .to eq("Usage: bigfiles [options]\n" \
              '    -g, --glob glob here             ' \
              'Which files to parse - default is ' \
-             "{app,lib,test,spec,feature}/**/*.{rb,swift,cpp,c,java,py}\n" \
+             '{Rakefile,Dockerfile,{*,.*}.{rb,rake,gemspec,swift,cpp,c,java,' \
+             'py,clj,cljs,scala,js,yml,sh,json},{src,app,lib,test,spec,' \
+             'feature}' \
+             '/**/{*,.*}.{rb,rake,gemspec,swift,cpp,c,java,py,clj,cljs,scala,' \
+             "js,yml,sh,json}}\n" \
              '    -e, --exclude-glob glob here     ' \
              "Files to exclude - default is none\n" \
              "    -h, --help                       This message\n")
