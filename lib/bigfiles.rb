@@ -64,7 +64,7 @@ module BigFiles
     def find_analyze_and_report_on_files
       @source_file_globber.source_files_glob = glob
       @source_file_globber.source_files_exclude_glob = exclude_glob
-      file_list = @source_file_globber.source_files
+      file_list = @source_file_globber.source_files_arr
       files_with_lines = file_list.map do |filename|
         @file_with_lines.new(filename)
       end

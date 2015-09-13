@@ -66,7 +66,7 @@ describe BigFiles::BigFiles do
         def expect_source_globber_used(glob, exclude_glob)
           file_list = %w(file_1 file_2)
           expect_globs_assigned(glob, exclude_glob)
-          expect(source_file_globber).to(receive(:source_files))
+          expect(source_file_globber).to(receive(:source_files_arr))
             .and_return(file_list)
         end
 
