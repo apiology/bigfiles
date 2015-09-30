@@ -47,10 +47,9 @@ describe BigFiles::BigFiles do
         end
 
         def default_glob
-          '{Rakefile,Dockerfile,{*,.*}.' \
-          '{rb,rake,gemspec,swift,cpp,c,java,py,clj,cljs,scala,js,yml,' \
-          'sh,json},{src,app,lib,test,spec,feature}/**/{*,.*}.' \
-          '{rb,rake,gemspec,swift,cpp,c,java,py,clj,cljs,' \
+          '{Rakefile,Dockerfile,{*,.*}.{rb,rake,gemspec,swift,cpp,c,java,py,' \
+          'clj,cljs,scala,js,yml,sh,json},{src,app,config,db,lib,test,spec,' \
+          'feature}/**/{*,.*}.{rb,rake,gemspec,swift,cpp,c,java,py,clj,cljs,' \
           'scala,js,yml,sh,json}}'
         end
 
