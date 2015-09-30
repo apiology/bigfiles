@@ -26,5 +26,6 @@ task :clear_metrics do |_t|
 end
 
 desc 'Default: Run specs and check quality.'
+task test: [:spec, :feature]
 task localtest: [:clear_metrics, :spec, :feature, :quality]
 task default: [:localtest]
