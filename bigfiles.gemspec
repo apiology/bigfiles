@@ -14,11 +14,10 @@ Gem::Specification.new do |s|
   s.executables = ['bigfiles']
   # s.extra_rdoc_files = ["CHANGELOG", "License.txt"]
   s.license = 'MIT'
-  s.files = Dir['License.txt', 'README.md',
-                'Rakefile',
-                'bin/bigfiles',
-                '{lib}/**/*',
-                'bigfiles.gemspec'] & `git ls-files -z`.split("\0")
+  s.files = Dir['CODE_OF_CONDUCT.md', 'License.txt', 'README.md',
+                '{lib}/bigfiles.rb',
+                '{lib}/bigfiles/**/*.rb',
+                'bigfiles.gemspec']
   # s.rdoc_options = ["--main", "README.md"]
   s.require_paths = ['lib']
   s.homepage = 'http://github.com/apiology/bigfiles'

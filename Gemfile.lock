@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bigfiles (0.1.2)
+    bigfiles (0.1.3)
       source_finder (>= 2)
 
 GEM
