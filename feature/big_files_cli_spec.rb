@@ -1,6 +1,6 @@
 require_relative 'feature_helper'
 
-describe 'bigfiles' do
+describe BigFiles do
   it 'starts up with no arguments' do
     expect(exec_io 'bigfiles -h')
       .to eq("Usage: bigfiles [options]\n" \
