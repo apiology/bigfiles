@@ -8,6 +8,8 @@ require 'source_finder/option_parser'
 module BigFiles
   # Simple tool to find the largest source files in your project.
   class BigFiles
+    NUM_FILES_DEFAULT = 3
+
     def initialize(args,
                    io: Kernel,
                    exiter: Kernel,
@@ -48,11 +50,22 @@ module BigFiles
       end
     end
 
+    def add_num_files_option(opts, options)
+      opts.on('-n', '--num-files number-here',
+              Integer,
+              'Top number of files to show--' \
+              "default #{NUM_FILES_DEFAULT}") do |n|
+        options[:num_files] = n
+      end
+    end
+
     def setup_options(opts)
       options = {}
+      options[:num_files] = NUM_FILES_DEFAULT # default
       opts.banner = 'Usage: bigfiles [options]'
       @source_finder_option_parser.add_options(opts, options)
       add_help_option(opts, options)
+      add_num_files_option(opts, options)
       options
     end
 
@@ -68,7 +81,8 @@ module BigFiles
       files_with_lines = file_list.map do |filename|
         @file_with_lines.new(filename)
       end
-      files_with_lines.sort.reverse[0..2].each do |file|
+      files_with_lines.sort
+        .reverse[0..(@options[:num_files] - 1)].each do |file|
         @io.puts "#{file.num_lines}: #{file.filename}"
       end
     end

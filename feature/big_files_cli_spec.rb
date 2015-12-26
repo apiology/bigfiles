@@ -13,7 +13,9 @@ describe BigFiles do
              "\n" \
              '    -e, --exclude-glob glob here     ' \
              "Files to exclude - default is none\n" \
-             "    -h, --help                       This message\n")
+             "    -h, --help                       This message\n" \
+             '    -n, --num-files number-here      ' \
+             "Top number of files to show--default 3\n")
   end
 
   # three_files one_file two_files some_nonsource_files many_files
