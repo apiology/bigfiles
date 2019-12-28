@@ -1,10 +1,13 @@
 language: ruby
-# without --debug, JRuby doesn't support coverage reporting
-env:
-  - JRUBY_OPTS="--debug"
+before_install:
+  - gem install bundler
 rvm:
-  - 2.0
-  - 2.1
-  - 2.2
-  - jruby-head
-  - ruby-head  
+  - ruby-2.4
+  - ruby-2.5
+  - ruby-2.6
+  - ruby-2.7
+  # JRuby error with native code build - possibly can be overcome?
+  # checking for main() in -lstdc++... RuntimeError: The compiler failed to generate
+  # https://travis-ci.com/apiology/pronto-punchlist/jobs/264907931
+  # - jruby-head
+  - ruby-head
