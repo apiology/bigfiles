@@ -88,28 +88,36 @@ describe BigFiles::BigFiles do
         let(:file_3) { expect_file_processed('file_3', 2) }
         let(:file_4) { expect_file_processed('file_4', 1) }
 
+        def sorts_as_smaller_than(file_a, file_b)
+          allow(file_a).to receive(:<=>).with(file_b).and_return(-1)
+        end
+
+        def sorts_as_larger_than(file_a, file_b)
+          allow(file_a).to receive(:<=>).with(file_b).and_return(1)
+        end
+
         def allow_file_1_sorted
-          allow(file_1).to receive(:<=>).with(file_2).and_return(1)
-          allow(file_1).to receive(:<=>).with(file_3).and_return(1)
-          allow(file_1).to receive(:<=>).with(file_4).and_return(1)
+          sorts_as_larger_than(file_1, file_2)
+          sorts_as_larger_than(file_1, file_3)
+          sorts_as_larger_than(file_1, file_4)
         end
 
         def allow_file_2_sorted
-          allow(file_2).to receive(:<=>).with(file_1).and_return(-1)
-          allow(file_2).to receive(:<=>).with(file_3).and_return(1)
-          allow(file_2).to receive(:<=>).with(file_4).and_return(1)
+          sorts_as_smaller_than(file_2, file_1)
+          sorts_as_larger_than(file_2, file_3)
+          sorts_as_larger_than(file_2, file_4)
         end
 
         def allow_file_3_sorted
-          allow(file_3).to receive(:<=>).with(file_1).and_return(-1)
-          allow(file_3).to receive(:<=>).with(file_2).and_return(-1)
-          allow(file_3).to receive(:<=>).with(file_4).and_return(1)
+          sorts_as_smaller_than(file_3, file_1)
+          sorts_as_smaller_than(file_3, file_2)
+          sorts_as_larger_than(file_3, file_4)
         end
 
         def allow_file_4_sorted
-          allow(file_4).to receive(:<=>).with(file_1).and_return(-1)
-          allow(file_4).to receive(:<=>).with(file_2).and_return(-1)
-          allow(file_4).to receive(:<=>).with(file_3).and_return(-1)
+          sorts_as_smaller_than(file_4, file_1)
+          sorts_as_smaller_than(file_4, file_2)
+          sorts_as_smaller_than(file_4, file_3)
         end
 
         def allow_file_comparisons
