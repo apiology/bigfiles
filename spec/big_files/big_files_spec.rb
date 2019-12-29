@@ -111,16 +111,4 @@ describe BigFiles::BigFiles do
       end
     end
   end
-
-  context 'With help argument' do
-    subject(:args) { ['-h'] }
-
-    describe '.run' do
-      it 'offers help' do
-        expect(io).to receive(:puts)
-        expect(exiter).to receive(:exit)
-        bigfiles.run
-      end
-    end
-  end
 end
