@@ -4,14 +4,21 @@ require 'spec_helper'
 require 'bigfiles'
 
 describe BigFiles::BigFiles do
-  let_double :io, :exiter, :file_with_lines, :source_file_globber
-
   subject(:bigfiles) do
     described_class.new(args,
                         io: io,
                         exiter: exiter,
                         file_with_lines: file_with_lines,
                         source_file_globber: source_file_globber)
+  end
+
+  let(:io) { class_double(Kernel, 'io') }
+  let(:exiter) { class_double(Kernel, 'exiter') }
+  let(:file_with_lines) do
+    class_double(BigFiles::FileWithLines, 'file_with_lines')
+  end
+  let(:source_file_globber) do
+    instance_double(SourceFinder::SourceFileGlobber, 'source_file_globber')
   end
 
   context 'with help argument' do

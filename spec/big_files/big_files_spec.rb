@@ -12,7 +12,14 @@ describe BigFiles::BigFiles do
   RSpec::Support::ObjectFormatter
     .default_instance.max_formatted_output_length = 999
 
-  let_double :io, :exiter, :file_with_lines, :source_file_globber
+  let(:io) { class_double(Kernel, 'io') }
+  let(:exiter) { class_double(Kernel, 'exiter') }
+  let(:file_with_lines) do
+    class_double(BigFiles::FileWithLines, 'file_with_lines')
+  end
+  let(:source_file_globber) do
+    instance_double(SourceFinder::SourceFileGlobber, 'source_file_globber')
+  end
 
   subject(:bigfiles) do
     described_class.new(args,

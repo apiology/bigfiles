@@ -4,7 +4,9 @@ require 'spec_helper'
 require 'bigfiles'
 
 describe BigFiles::FileWithLines do
-  let_double :filename, :file_opener
+  let(:filename) { instance_double(String, 'filename') }
+  let(:file_opener) { class_double(File, 'file_opener') }
+
   subject(:file_with_lines) do
     described_class.new(filename, file_opener: file_opener)
   end
@@ -17,7 +19,8 @@ describe BigFiles::FileWithLines do
     end
 
     describe '#<=>' do
-      let_double :spaceship_result, :another_filename
+      let(:spaceship_result) { instance_double(Int, 'spaceship_result') }
+      let(:another_filename) { instance_double(String, 'another_filename') }
       let(:another_file_with_lines) do
         described_class.new(another_filename, file_opener: file_opener)
       end
@@ -37,7 +40,7 @@ describe BigFiles::FileWithLines do
     end
 
     describe '#num_lines' do
-      let_double :opened_file
+      let(:opened_file) { instance_double(File, 'opened_file') }
 
       def allow_file_read
         allow(file_opener).to(receive(:open)).with(filename, 'r')
