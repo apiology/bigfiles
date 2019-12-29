@@ -4,12 +4,10 @@ require 'spec_helper'
 require 'bigfiles'
 
 describe BigFiles::BigFiles do
-  #
   # Until this spec is decoupled from source_finder changes, make sure
   # that RSpec shows the actual difference:
   #
   # https://github.com/rspec/rspec-core/issues/2535
-  #
   RSpec::Support::ObjectFormatter.default_instance.max_formatted_output_length = 999
 
   let_double :io, :exiter, :file_with_lines, :source_file_globber
