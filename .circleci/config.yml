@@ -1,0 +1,17 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/bigfiles
+    docker:
+      - image: apiology/circleci-ruby:latest
+    steps:
+      - checkout
+      - type: cache-restore
+        key: bigfiles-{{ checksum "bigfiles.gemspec" }}-{{ checksum "Gemfile" }}
+      - run: gem install bundler
+      - run: bundle install --path vendor/bundle --jobs=4
+      - run: bundle exec rake --jobs=4 ci
+      - type: cache-save
+        key: bigfiles-{{ checksum "bigfiles.gemspec" }}-{{ checksum "Gemfile" }}
+        paths:
+          - "vendor/bundle"
