@@ -138,16 +138,19 @@ describe BigFiles::BigFiles do
           allow_file_output('file_4', 1) if num_files && num_files.to_i >= 4
         end
 
-        it 'runs' do
-          allow_source_globber_used(glob, exclude_glob)
-          allow_file_comparisons
-          allow_files_output
-
-          bigfiles.run
+        def expect_files_output
           expect_file_output('file_1', 4)
           expect_file_output('file_2', 3)
           expect_file_output('file_3', 2)
           expect_file_output('file_4', 1) if num_files && num_files.to_i >= 4
+        end
+
+        it 'runs' do
+          allow_source_globber_used(glob, exclude_glob)
+          allow_file_comparisons
+          allow_files_output
+          bigfiles.run
+          expect_files_output
         end
       end
     end
