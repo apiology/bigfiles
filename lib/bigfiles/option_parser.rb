@@ -1,19 +1,8 @@
 # frozen_string_literal: true
 
+require_relative 'config'
+
 module BigFiles
-  # Configuration for bigfiles gem
-  class Config
-    attr_reader :help, :num_files, :glob, :exclude
-    def initialize(num_files:,
-                   help: false,
-                   glob: nil,
-                   exclude: nil)
-      @num_files = num_files
-      @help = help
-      @glob = glob
-      @exclude = exclude
-    end
-  end
   # Parse options passed to bigfiles command
   class OptionParser
     NUM_FILES_DEFAULT = 3
@@ -59,7 +48,7 @@ module BigFiles
         options = setup_options(opts)
         @option_parser = opts
       end.parse!(args)
-      Config.new(**options)
+      Config.new(**options, source_finder_option_parser: @source_finder_option_parser)
     end
 
     def usage

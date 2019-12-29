@@ -27,29 +27,19 @@ module BigFiles
                             io: io,
                             exiter: exiter,
                             source_finder_option_parser:
-                              source_finder_option_parser))
+                              source_finder_option_parser),
+                   config: bigfiles_option_parser.parse_options(args))
       @io = io
       @file_with_lines = file_with_lines
       @source_file_globber = source_file_globber
       @source_finder_option_parser = source_finder_option_parser
       @bigfiles_option_parser = bigfiles_option_parser
-      @config = parse_options(args)
-    end
-
-    def_delegators :@bigfiles_option_parser, :parse_options, :usage
-
-    def glob
-      @config.glob || @source_finder_option_parser.default_source_files_glob
-    end
-
-    def exclude_glob
-      @config.exclude ||
-        @source_finder_option_parser.default_source_files_exclude_glob
+      @config = config
     end
 
     def find_analyze_and_report_on_files
-      @source_file_globber.source_files_glob = glob
-      @source_file_globber.source_files_exclude_glob = exclude_glob
+      @source_file_globber.source_files_glob = @config.glob
+      @source_file_globber.source_files_exclude_glob = @config.exclude
       file_list = @source_file_globber.source_files_arr
       files_with_lines = file_list.map do |filename|
         @file_with_lines.new(filename)
@@ -62,7 +52,7 @@ module BigFiles
 
     def run
       if @config.help
-        usage
+        @bigfiles_option_parser.usage
       else
         find_analyze_and_report_on_files
       end
