@@ -4,12 +4,12 @@ require 'spec_helper'
 require 'bigfiles'
 
 describe BigFiles::FileWithLines do
-  let(:filename) { instance_double(String, 'filename') }
-  let(:file_opener) { class_double(File, 'file_opener') }
-
-  subject(:file_with_lines) do
+  let(:file_with_lines) do
     described_class.new(filename, file_opener: file_opener)
   end
+
+  let(:filename) { instance_double(String, 'filename') }
+  let(:file_opener) { class_double(File, 'file_opener') }
 
   context 'with a filename' do
     describe '#new' do
