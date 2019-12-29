@@ -3,6 +3,7 @@
 require 'optparse'
 
 require_relative 'bigfiles/file_with_lines'
+require_relative 'bigfiles/option_parser'
 require 'source_finder/source_file_globber'
 require 'source_finder/option_parser'
 
@@ -17,8 +18,11 @@ module BigFiles
                    exiter: Kernel,
                    file_with_lines: FileWithLines,
                    source_file_globber: SourceFinder::SourceFileGlobber.new,
-                   option_parser_class: OptionParser,
-                   source_finder_option_parser: SourceFinder::OptionParser.new)
+                   option_parser_class: ::OptionParser,
+                   source_finder_option_parser: SourceFinder::OptionParser.new,
+                   bigfiles_option_parser:
+                     ::BigFiles::OptionParser
+                       .new(option_parser_class: option_parser_class))
       @io = io
       @exiter = exiter
       @file_with_lines = file_with_lines
@@ -26,6 +30,7 @@ module BigFiles
       @option_parser_class = option_parser_class
       @source_finder_option_parser = source_finder_option_parser
       @options = parse_options(args)
+      @bigfiles_option_parser = bigfiles_option_parser
     end
 
     def parse_options(args)
@@ -35,6 +40,11 @@ module BigFiles
         @option_parser = opts
       end.parse!(args)
       options
+    end
+
+    def usage
+      @io.puts @option_parser
+      @exiter.exit 1
     end
 
     def glob
@@ -69,11 +79,6 @@ module BigFiles
       add_help_option(opts, options)
       add_num_files_option(opts, options)
       options
-    end
-
-    def usage
-      @io.puts @option_parser
-      @exiter.exit 1
     end
 
     def find_analyze_and_report_on_files
