@@ -55,7 +55,7 @@ module BigFiles
     def add_num_files_option(opts, options)
       opts.on('-n', '--num-files number-here',
               Integer,
-              'Top number of files to show--' \
+              "Top number of files to show--" \
               "default #{NUM_FILES_DEFAULT}") do |n|
         options[:num_files] = n
       end
