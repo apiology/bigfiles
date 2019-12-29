@@ -5,12 +5,12 @@ before_install:
   - gem update --system
   - gem install bundler
 rvm:
-  - ruby-2.4
-  - ruby-2.5
-  - ruby-2.6
-  - ruby-2.7
   # JRuby error with native code build - possibly can be overcome?
   # checking for main() in -lstdc++... RuntimeError: The compiler failed to generate
   # https://travis-ci.com/apiology/pronto-punchlist/jobs/264907931
   # - jruby-head
   - ruby-head
+  - ruby-2.7
+  - ruby-2.6
+  - ruby-2.5
+  - ruby-2.4
