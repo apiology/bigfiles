@@ -18,11 +18,19 @@ describe BigFiles::BigFiles do
     subject(:args) { ['-h'] }
 
     describe '.run' do
-      it 'offers help' do
+      before do
         allow(io).to receive(:puts)
         allow(exiter).to receive(:exit)
+      end
+
+      it 'offers help' do
         bigfiles.run
-        # TODO: Add expectations?
+        expect(exiter).to have_received(:exit)
+      end
+
+      it 'exits with correct status' do
+        bigfiles.run
+        expect(exiter).to have_received(:exit).with(1)
       end
     end
   end

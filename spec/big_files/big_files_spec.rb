@@ -28,9 +28,6 @@ describe BigFiles::BigFiles do
      num_files: '6' }].each do |config|
     glob = config[:glob]
     context "With glob of #{glob}" do
-      let(:exclude_glob) { config[:exclude] }
-      let(:num_files) { config[:num_files] }
-
       subject(:args) do
         args = []
         args += ['--glob', glob] unless glob.nil?
@@ -39,13 +36,16 @@ describe BigFiles::BigFiles do
         args
       end
 
+      let(:exclude_glob) { config[:exclude] }
+      let(:num_files) { config[:num_files] }
+
       describe '.run' do
         def allow_file_queried(file, filename: raise, num_lines: raise)
           allow(file).to receive(:num_lines).and_return(num_lines)
           allow(file).to receive(:filename).and_return(filename)
         end
 
-        def expect_file_processed(filename, num_lines)
+        def allow_file_processed(filename, num_lines)
           file = instance_double(BigFiles::FileWithLines,
                                  "#{filename} file_with_lines")
           allow(file_with_lines).to(receive(:new)).with(filename)
@@ -56,6 +56,11 @@ describe BigFiles::BigFiles do
 
         def allow_file_output(filename, num_lines)
           allow(io).to receive(:puts).with("#{num_lines}: #{filename}")
+        end
+
+        def expect_file_output(filename, num_lines)
+          expect(io).to have_received(:puts).with("#{num_lines}: #{filename}")
+                                            .once
         end
 
         def default_glob
@@ -82,11 +87,10 @@ describe BigFiles::BigFiles do
                                     .and_return(file_list)
         end
 
-        # TODO: Should this be allow?
-        let(:file_1) { expect_file_processed('file_1', 4) }
-        let(:file_2) { expect_file_processed('file_2', 3) }
-        let(:file_3) { expect_file_processed('file_3', 2) }
-        let(:file_4) { expect_file_processed('file_4', 1) }
+        let(:file_1) { allow_file_processed('file_1', 4) }
+        let(:file_2) { allow_file_processed('file_2', 3) }
+        let(:file_3) { allow_file_processed('file_3', 2) }
+        let(:file_4) { allow_file_processed('file_4', 1) }
 
         def sorts_as_smaller_than(file_a, file_b)
           allow(file_a).to receive(:<=>).with(file_b).and_return(-1)
@@ -141,6 +145,10 @@ describe BigFiles::BigFiles do
 
           bigfiles.run
           # TODO: Shouldn't we have expectations here?
+          expect_file_output('file_1', 4)
+          expect_file_output('file_2', 3)
+          expect_file_output('file_3', 2)
+          expect_file_output('file_4', 1) if num_files && num_files.to_i >= 4
         end
       end
     end
