@@ -69,6 +69,8 @@ Style/StringLiterals:
 
 AllCops:
   TargetRubyVersion: 2.4
-
+  # These are sample files and need to maintain a certain format
+  Exclude:
+    - 'feature/samples/**/*'
 
 require: rubocop-rspec
