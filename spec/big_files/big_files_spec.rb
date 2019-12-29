@@ -1,17 +1,16 @@
-# -*- coding: utf-8 -*-
+# frozen_string_literal: true
+
 require 'spec_helper'
 require 'bigfiles'
+require 'bigfiles/file_with_lines'
 
 describe BigFiles::BigFiles do
-  #
   # Until this spec is decoupled from source_finder changes, make sure
   # that RSpec shows the actual difference:
   #
   # https://github.com/rspec/rspec-core/issues/2535
-  #
-  RSpec::Support::ObjectFormatter.default_instance.max_formatted_output_length = 999
-
-  let_double :io, :exiter, :file_with_lines, :source_file_globber
+  RSpec::Support::ObjectFormatter
+    .default_instance.max_formatted_output_length = 999
 
   subject(:bigfiles) do
     described_class.new(args,
@@ -21,13 +20,20 @@ describe BigFiles::BigFiles do
                         source_file_globber: source_file_globber)
   end
 
+  let(:io) { class_double(Kernel, 'io') }
+  let(:exiter) { class_double(Kernel, 'exiter') }
+  let(:file_with_lines) do
+    class_double(BigFiles::FileWithLines, 'file_with_lines')
+  end
+  let(:source_file_globber) do
+    instance_double(SourceFinder::SourceFileGlobber, 'source_file_globber')
+  end
+
   [{ glob: nil, exclude: nil },
    { glob: '*/*.{rb,swift}', exclude: '*/foo.rb' },
    { glob: '*/*.{rb,swift}', exclude: '*/foo.rb',
      num_files: '6' }].each do |config|
     glob = config[:glob]
-    exclude_glob = config[:exclude]
-    num_files = config[:num_files]
     context "With glob of #{glob}" do
       subject(:args) do
         args = []
@@ -37,28 +43,31 @@ describe BigFiles::BigFiles do
         args
       end
 
-      describe '#new' do
-        it 'initializes' do
-          subject
-        end
-      end
+      let(:exclude_glob) { config[:exclude] }
+      let(:num_files) { config[:num_files] }
 
       describe '.run' do
-        def expect_file_queried(file, filename: fail, num_lines: fail)
+        def allow_file_queried(file, filename: raise, num_lines: raise)
           allow(file).to receive(:num_lines).and_return(num_lines)
           allow(file).to receive(:filename).and_return(filename)
         end
 
-        def expect_file_processed(filename, num_lines)
-          file = double("#{filename} file_with_lines")
-          expect(file_with_lines).to(receive(:new)).with(filename)
-            .and_return(file)
-          expect_file_queried(file, filename: filename, num_lines: num_lines)
+        def allow_file_processed(filename, num_lines)
+          file = instance_double(BigFiles::FileWithLines,
+                                 "#{filename} file_with_lines")
+          allow(file_with_lines).to(receive(:new)).with(filename)
+                                .and_return(file)
+          allow_file_queried(file, filename: filename, num_lines: num_lines)
           file
         end
 
+        def allow_file_output(filename, num_lines)
+          allow(io).to receive(:puts).with("#{num_lines}: #{filename}")
+        end
+
         def expect_file_output(filename, num_lines)
-          expect(io).to receive(:puts).with("#{num_lines}: #{filename}")
+          expect(io).to have_received(:puts).with("#{num_lines}: #{filename}")
+                                            .once
         end
 
         def default_glob
@@ -69,63 +78,87 @@ describe BigFiles::BigFiles do
           'sh,swift,yml}}'
         end
 
-        def expect_globs_assigned(glob, exclude_glob)
+        def allow_globs_assigned(glob, exclude_glob)
           actual_glob = glob || default_glob
           actual_exclude_glob = exclude_glob || '**/vendor/**'
-          expect(source_file_globber).to(receive(:source_files_glob=))
-            .with(actual_glob)
-          expect(source_file_globber).to(receive(:source_files_exclude_glob=))
-            .with(actual_exclude_glob)
+          allow(source_file_globber).to(receive(:source_files_glob=))
+                                    .with(actual_glob)
+          allow(source_file_globber).to(receive(:source_files_exclude_glob=))
+                                    .with(actual_exclude_glob)
         end
 
-        def expect_source_globber_used(glob, exclude_glob)
-          file_list = %w(file_1 file_2 file_3 file_4)
-          expect_globs_assigned(glob, exclude_glob)
-          expect(source_file_globber).to(receive(:source_files_arr))
-            .and_return(file_list)
+        def allow_source_globber_used(glob, exclude_glob)
+          file_list = %w[file_1 file_2 file_3 file_4]
+          allow_globs_assigned(glob, exclude_glob)
+          allow(source_file_globber).to(receive(:source_files_arr))
+                                    .and_return(file_list)
         end
 
-        it 'runs' do
-          expect_source_globber_used(glob, exclude_glob)
-          file_1 = expect_file_processed('file_1', 4)
-          file_2 = expect_file_processed('file_2', 3)
-          file_3 = expect_file_processed('file_3', 2)
-          file_4 = expect_file_processed('file_4', 1)
+        let(:file_1) { allow_file_processed('file_1', 4) }
+        let(:file_2) { allow_file_processed('file_2', 3) }
+        let(:file_3) { allow_file_processed('file_3', 2) }
+        let(:file_4) { allow_file_processed('file_4', 1) }
 
-          allow(file_1).to receive(:<=>).with(file_2).and_return(1)
-          allow(file_1).to receive(:<=>).with(file_3).and_return(1)
-          allow(file_1).to receive(:<=>).with(file_4).and_return(1)
+        def sorts_as_smaller_than(file_a, file_b)
+          allow(file_a).to receive(:<=>).with(file_b).and_return(-1)
+        end
 
-          allow(file_2).to receive(:<=>).with(file_1).and_return(-1)
-          allow(file_2).to receive(:<=>).with(file_3).and_return(1)
-          allow(file_2).to receive(:<=>).with(file_4).and_return(1)
+        def sorts_as_larger_than(file_a, file_b)
+          allow(file_a).to receive(:<=>).with(file_b).and_return(1)
+        end
 
-          allow(file_3).to receive(:<=>).with(file_1).and_return(-1)
-          allow(file_3).to receive(:<=>).with(file_2).and_return(-1)
-          allow(file_3).to receive(:<=>).with(file_4).and_return(1)
+        def allow_file_1_sorted
+          sorts_as_larger_than(file_1, file_2)
+          sorts_as_larger_than(file_1, file_3)
+          sorts_as_larger_than(file_1, file_4)
+        end
 
-          allow(file_4).to receive(:<=>).with(file_1).and_return(-1)
-          allow(file_4).to receive(:<=>).with(file_2).and_return(-1)
-          allow(file_4).to receive(:<=>).with(file_3).and_return(-1)
+        def allow_file_2_sorted
+          sorts_as_smaller_than(file_2, file_1)
+          sorts_as_larger_than(file_2, file_3)
+          sorts_as_larger_than(file_2, file_4)
+        end
 
+        def allow_file_3_sorted
+          sorts_as_smaller_than(file_3, file_1)
+          sorts_as_smaller_than(file_3, file_2)
+          sorts_as_larger_than(file_3, file_4)
+        end
+
+        def allow_file_4_sorted
+          sorts_as_smaller_than(file_4, file_1)
+          sorts_as_smaller_than(file_4, file_2)
+          sorts_as_smaller_than(file_4, file_3)
+        end
+
+        def allow_file_comparisons
+          allow_file_1_sorted
+          allow_file_2_sorted
+          allow_file_3_sorted
+          allow_file_4_sorted
+        end
+
+        def allow_files_output
+          allow_file_output('file_1', 4)
+          allow_file_output('file_2', 3)
+          allow_file_output('file_3', 2)
+          allow_file_output('file_4', 1) if num_files && num_files.to_i >= 4
+        end
+
+        def expect_files_output
           expect_file_output('file_1', 4)
           expect_file_output('file_2', 3)
           expect_file_output('file_3', 2)
           expect_file_output('file_4', 1) if num_files && num_files.to_i >= 4
-
-          bigfiles.run
         end
-      end
-    end
-  end
 
-  context 'With help argument' do
-    subject(:args) { ['-h'] }
-    describe '.run' do
-      it 'offers help' do
-        expect(io).to receive(:puts)
-        expect(exiter).to receive(:exit)
-        bigfiles.run
+        it 'runs' do
+          allow_source_globber_used(glob, exclude_glob)
+          allow_file_comparisons
+          allow_files_output
+          bigfiles.run
+          expect_files_output
+        end
       end
     end
   end

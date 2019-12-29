@@ -1,11 +1,8 @@
+# frozen_string_literal: true
+
 require 'rspec/core/rake_task'
 require 'quality/rake/task'
 require 'bundler/gem_tasks'
-
-Quality::Rake::Task.new do |task|
-  task.skip_tools = ['reek', 'shellcheck']
-  task.output_dir = 'metrics'
-end
 
 desc 'Run specs'
 RSpec::Core::RakeTask.new(:spec) do |task|
@@ -22,10 +19,10 @@ end
 task :clear_metrics do |_t|
   ret =
     system('git checkout coverage/.last_run.json metrics/*_high_water_mark')
-  fail unless ret
+  raise unless ret
 end
 
 desc 'Default: Run specs and check quality.'
-task test: [:spec, :feature]
-task localtest: [:clear_metrics, :spec, :feature, :quality]
+task test: %i[spec feature]
+task localtest: %i[clear_metrics spec feature quality]
 task default: [:localtest]

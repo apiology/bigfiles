@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'optparse'
 
 require_relative 'bigfiles/file_with_lines'
@@ -53,7 +55,7 @@ module BigFiles
     def add_num_files_option(opts, options)
       opts.on('-n', '--num-files number-here',
               Integer,
-              'Top number of files to show--' \
+              "Top number of files to show--" \
               "default #{NUM_FILES_DEFAULT}") do |n|
         options[:num_files] = n
       end
@@ -82,7 +84,7 @@ module BigFiles
         @file_with_lines.new(filename)
       end
       files_with_lines.sort
-        .reverse[0..(@options[:num_files] - 1)].each do |file|
+                      .reverse[0..(@options[:num_files] - 1)].each do |file|
         @io.puts "#{file.num_lines}: #{file.filename}"
       end
     end

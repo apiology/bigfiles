@@ -1,5 +1,6 @@
 # ; -*-Ruby-*-
-# -*- encoding: utf-8 -*-
+# frozen_string_literal: true
+
 $LOAD_PATH.push File.join(File.dirname(__FILE__), 'lib')
 require 'bigfiles/version'
 
@@ -27,8 +28,12 @@ Gem::Specification.new do |s|
 
   s.add_dependency('source_finder', ['>=2'])
   s.add_development_dependency('bundler')
-  s.add_development_dependency('rake')
+  s.add_development_dependency('pronto')
+  s.add_development_dependency('pronto-punchlist')
+  s.add_development_dependency('pronto-reek')
+  s.add_development_dependency('pronto-rubocop')
   s.add_development_dependency('quality', '~> 36')
+  s.add_development_dependency('rake')
   s.add_development_dependency('rspec')
   s.add_development_dependency('simplecov')
 end
