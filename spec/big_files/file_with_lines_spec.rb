@@ -51,8 +51,6 @@ describe BigFiles::FileWithLines do
       end
 
       it 'returns a number' do
-        # file=File.open("path-to-file","r")
-        # file.readlines.size
         allow_file_read
         expect(file_with_lines.num_lines).to eq(3)
       end
