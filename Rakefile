@@ -2,11 +2,6 @@ require 'rspec/core/rake_task'
 require 'quality/rake/task'
 require 'bundler/gem_tasks'
 
-Quality::Rake::Task.new do |task|
-  task.skip_tools = ['reek', 'shellcheck']
-  task.output_dir = 'metrics'
-end
-
 desc 'Run specs'
 RSpec::Core::RakeTask.new(:spec) do |task|
   task.pattern = 'spec/**/*_spec.rb'
