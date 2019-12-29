@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 # Simple tool to find the largest source files in your project.
 module BigFiles
+  # Investigate a project and generate a report on the n biggest files
   class Inspector
     def initialize(config:,
                    source_file_globber:,
