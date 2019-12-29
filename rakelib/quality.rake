@@ -5,7 +5,7 @@ require 'quality/rake/task'
 Quality::Rake::Task.new do |task|
   task.exclude_files = ['Gemfile.lock']
   # cane deprecated in favor of rubocop, reek rarely actionable
-  task.skip_tools = %w[reek cane]
+  task.skip_tools = %w[reek cane shellcheck]
   task.output_dir = 'metrics'
 end
 
