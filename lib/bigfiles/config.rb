@@ -8,7 +8,8 @@ module BigFiles
                    num_files:,
                    help: false,
                    glob: source_finder_option_parser.default_source_files_glob,
-                   exclude: source_finder_option_parser.default_source_files_exclude_glob)
+                   exclude: source_finder_option_parser
+                     .default_source_files_exclude_glob)
       @num_files = num_files
       @help = help
       @glob = glob
