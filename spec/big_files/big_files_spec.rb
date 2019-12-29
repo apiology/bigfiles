@@ -3,6 +3,14 @@ require 'spec_helper'
 require 'bigfiles'
 
 describe BigFiles::BigFiles do
+  #
+  # Until this spec is decoupled from source_finder changes, make sure
+  # that RSpec shows the actual difference:
+  #
+  # https://github.com/rspec/rspec-core/issues/2535
+  #
+  RSpec::Support::ObjectFormatter.default_instance.max_formatted_output_length = 999
+
   let_double :io, :exiter, :file_with_lines, :source_file_globber
 
   subject(:bigfiles) do
@@ -54,15 +62,16 @@ describe BigFiles::BigFiles do
         end
 
         def default_glob
-          '{Rakefile,Dockerfile,{*,.*}.{rb,rake,gemspec,swift,cpp,c,java,py,' \
-          'clj,cljs,scala,js,yml,sh,json},{src,app,config,db,lib,test,spec,' \
-          'feature}/**/{*,.*}.{rb,rake,gemspec,swift,cpp,c,java,py,clj,cljs,' \
-          'scala,js,yml,sh,json}}'
+          '{Dockerfile,Rakefile,{*,.*}.{c,clj,cljs,cpp,gemspec,groovy,html,' \
+          'java,js,json,py,rake,rb,scala,sh,swift,yml},{app,config,db,' \
+          'feature,lib,spec,src,test,tests,vars,www}/**/{*,.*}.{c,clj,' \
+          'cljs,cpp,gemspec,groovy,html,java,js,json,py,rake,rb,scala,' \
+          'sh,swift,yml}}'
         end
 
         def expect_globs_assigned(glob, exclude_glob)
           actual_glob = glob || default_glob
-          actual_exclude_glob = exclude_glob || '{}'
+          actual_exclude_glob = exclude_glob || '**/vendor/**'
           expect(source_file_globber).to(receive(:source_files_glob=))
             .with(actual_glob)
           expect(source_file_globber).to(receive(:source_files_exclude_glob=))

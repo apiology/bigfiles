@@ -3,7 +3,7 @@ require 'quality/rake/task'
 require 'bundler/gem_tasks'
 
 Quality::Rake::Task.new do |task|
-  task.skip_tools = ['reek']
+  task.skip_tools = ['reek', 'shellcheck']
   task.output_dir = 'metrics'
 end
 
