@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# frozen_string_literal: true
+
 require 'spec_helper'
 require 'bigfiles'
 
@@ -38,7 +39,7 @@ describe BigFiles::BigFiles do
       end
 
       describe '.run' do
-        def expect_file_queried(file, filename: fail, num_lines: fail)
+        def expect_file_queried(file, filename: raise, num_lines: raise)
           allow(file).to receive(:num_lines).and_return(num_lines)
           allow(file).to receive(:filename).and_return(filename)
         end
@@ -46,7 +47,7 @@ describe BigFiles::BigFiles do
         def expect_file_processed(filename, num_lines)
           file = double("#{filename} file_with_lines")
           expect(file_with_lines).to(receive(:new)).with(filename)
-            .and_return(file)
+                                 .and_return(file)
           expect_file_queried(file, filename: filename, num_lines: num_lines)
           file
         end
@@ -67,16 +68,16 @@ describe BigFiles::BigFiles do
           actual_glob = glob || default_glob
           actual_exclude_glob = exclude_glob || '**/vendor/**'
           expect(source_file_globber).to(receive(:source_files_glob=))
-            .with(actual_glob)
+                                     .with(actual_glob)
           expect(source_file_globber).to(receive(:source_files_exclude_glob=))
-            .with(actual_exclude_glob)
+                                     .with(actual_exclude_glob)
         end
 
         def expect_source_globber_used(glob, exclude_glob)
-          file_list = %w(file_1 file_2 file_3 file_4)
+          file_list = %w[file_1 file_2 file_3 file_4]
           expect_globs_assigned(glob, exclude_glob)
           expect(source_file_globber).to(receive(:source_files_arr))
-            .and_return(file_list)
+                                     .and_return(file_list)
         end
 
         it 'runs' do
@@ -115,6 +116,7 @@ describe BigFiles::BigFiles do
 
   context 'With help argument' do
     subject(:args) { ['-h'] }
+
     describe '.run' do
       it 'offers help' do
         expect(io).to receive(:puts)

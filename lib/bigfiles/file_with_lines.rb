@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module BigFiles
   # Encapsulates a file which has a certain number of lines
   class FileWithLines
