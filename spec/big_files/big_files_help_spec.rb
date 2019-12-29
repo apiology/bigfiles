@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# frozen_string_literal: true
+
 require 'spec_helper'
 require 'bigfiles'
 
@@ -13,13 +14,15 @@ describe BigFiles::BigFiles do
                         source_file_globber: source_file_globber)
   end
 
-  context 'With help argument' do
+  context 'with help argument' do
     subject(:args) { ['-h'] }
+
     describe '.run' do
       it 'offers help' do
-        expect(io).to receive(:puts)
-        expect(exiter).to receive(:exit)
+        allow(io).to receive(:puts)
+        allow(exiter).to receive(:exit)
         bigfiles.run
+        # TODO: Add expectations?
       end
     end
   end
