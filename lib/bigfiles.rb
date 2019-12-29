@@ -28,10 +28,6 @@ module BigFiles
                             source_finder_option_parser:
                               source_finder_option_parser),
                    config: bigfiles_option_parser.parse_options(args))
-      @io = io
-      @file_with_lines = file_with_lines
-      @source_file_globber = source_file_globber
-      @source_finder_option_parser = source_finder_option_parser
       @bigfiles_option_parser = bigfiles_option_parser
       @config = config
       @inspector = inspector_class.new(source_file_globber: source_file_globber,
