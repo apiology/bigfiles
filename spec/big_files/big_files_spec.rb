@@ -144,7 +144,6 @@ describe BigFiles::BigFiles do
           allow_files_output
 
           bigfiles.run
-          # TODO: Shouldn't we have expectations here?
           expect_file_output('file_1', 4)
           expect_file_output('file_2', 3)
           expect_file_output('file_3', 2)
