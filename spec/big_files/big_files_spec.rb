@@ -37,12 +37,6 @@ describe BigFiles::BigFiles do
         args
       end
 
-      describe '#new' do
-        it 'initializes' do
-          subject
-        end
-      end
-
       describe '.run' do
         def expect_file_queried(file, filename: fail, num_lines: fail)
           allow(file).to receive(:num_lines).and_return(num_lines)
