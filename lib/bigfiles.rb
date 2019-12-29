@@ -33,17 +33,17 @@ module BigFiles
       @source_file_globber = source_file_globber
       @source_finder_option_parser = source_finder_option_parser
       @bigfiles_option_parser = bigfiles_option_parser
-      @options = parse_options(args)
+      @config = parse_options(args)
     end
 
     def_delegators :@bigfiles_option_parser, :parse_options, :usage
 
     def glob
-      @options[:glob] || @source_finder_option_parser.default_source_files_glob
+      @config.glob || @source_finder_option_parser.default_source_files_glob
     end
 
     def exclude_glob
-      @options[:exclude] ||
+      @config.exclude ||
         @source_finder_option_parser.default_source_files_exclude_glob
     end
 
@@ -55,13 +55,13 @@ module BigFiles
         @file_with_lines.new(filename)
       end
       files_with_lines.sort
-                      .reverse[0..(@options[:num_files] - 1)].each do |file|
+                      .reverse[0..(@config.num_files - 1)].each do |file|
         @io.puts "#{file.num_lines}: #{file.filename}"
       end
     end
 
     def run
-      if @options[:help]
+      if @config.help
         usage
       else
         find_analyze_and_report_on_files
