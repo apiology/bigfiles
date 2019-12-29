@@ -27,9 +27,10 @@ describe BigFiles::BigFiles do
    { glob: '*/*.{rb,swift}', exclude: '*/foo.rb',
      num_files: '6' }].each do |config|
     glob = config[:glob]
-    exclude_glob = config[:exclude]
-    num_files = config[:num_files]
     context "With glob of #{glob}" do
+      let(:exclude_glob) { config[:exclude] }
+      let(:num_files) { config[:num_files] }
+
       subject(:args) do
         args = []
         args += ['--glob', glob] unless glob.nil?
@@ -81,35 +82,57 @@ describe BigFiles::BigFiles do
                                     .and_return(file_list)
         end
 
-        it 'runs' do
-          allow_source_globber_used(glob, exclude_glob)
-          file_1 = expect_file_processed('file_1', 4)
-          file_2 = expect_file_processed('file_2', 3)
-          file_3 = expect_file_processed('file_3', 2)
-          file_4 = expect_file_processed('file_4', 1)
+        # TODO: Should this be allow?
+        let(:file_1) { expect_file_processed('file_1', 4) }
+        let(:file_2) { expect_file_processed('file_2', 3) }
+        let(:file_3) { expect_file_processed('file_3', 2) }
+        let(:file_4) { expect_file_processed('file_4', 1) }
 
+        def allow_file_1_sorted
           allow(file_1).to receive(:<=>).with(file_2).and_return(1)
           allow(file_1).to receive(:<=>).with(file_3).and_return(1)
           allow(file_1).to receive(:<=>).with(file_4).and_return(1)
+        end
 
+        def allow_file_2_sorted
           allow(file_2).to receive(:<=>).with(file_1).and_return(-1)
           allow(file_2).to receive(:<=>).with(file_3).and_return(1)
           allow(file_2).to receive(:<=>).with(file_4).and_return(1)
+        end
 
+        def allow_file_3_sorted
           allow(file_3).to receive(:<=>).with(file_1).and_return(-1)
           allow(file_3).to receive(:<=>).with(file_2).and_return(-1)
           allow(file_3).to receive(:<=>).with(file_4).and_return(1)
+        end
 
+        def allow_file_4_sorted
           allow(file_4).to receive(:<=>).with(file_1).and_return(-1)
           allow(file_4).to receive(:<=>).with(file_2).and_return(-1)
           allow(file_4).to receive(:<=>).with(file_3).and_return(-1)
+        end
 
+        def allow_file_comparisons
+          allow_file_1_sorted
+          allow_file_2_sorted
+          allow_file_3_sorted
+          allow_file_4_sorted
+        end
+
+        def allow_files_output
           allow_file_output('file_1', 4)
           allow_file_output('file_2', 3)
           allow_file_output('file_3', 2)
           allow_file_output('file_4', 1) if num_files && num_files.to_i >= 4
+        end
+
+        it 'runs' do
+          allow_source_globber_used(glob, exclude_glob)
+          allow_file_comparisons
+          allow_files_output
 
           bigfiles.run
+          # TODO: Shouldn't we have expectations here?
         end
       end
     end
