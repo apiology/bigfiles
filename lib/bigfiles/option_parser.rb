@@ -37,9 +37,7 @@ module BigFiles
     end
 
     def add_help_option(opts, options)
-      opts.on('-h', '--help', 'This message') do |_|
-        options[:help] = true
-      end
+      opts.on('-h', '--help', 'This message') { |_| options[:help] = true }
     end
 
     def parse_options(args)
