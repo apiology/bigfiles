@@ -41,7 +41,8 @@ describe BigFiles::FileWithLines do
         expect(file_opener).to(receive(:open)).with(filename, 'r')
                            .and_yield(opened_file)
         expect(opened_file).to(receive(:each_line))
-                           .and_yield('line 1').and_yield('line 2').and_yield('line 3')
+                           .and_yield('line 1').and_yield('line 2')
+                           .and_yield('line 3')
         expect(file_with_lines.num_lines).to eq(3)
       end
     end
