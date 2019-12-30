@@ -1,13 +1,16 @@
 # frozen_string_literal: true
 
+require_relative 'config'
+require_relative 'file_with_lines'
+
 # Simple tool to find the largest source files in your project.
 module BigFiles
   # Investigate a project and generate a report on the n biggest files
   class Inspector
-    def initialize(config:,
-                   source_file_globber:,
-                   file_with_lines:,
-                   io:)
+    def initialize(config: Config.new,
+                   source_file_globber: SourceFinder::SourceFileGlobber.new,
+                   file_with_lines: FileWithLines,
+                   io: Kernel)
       @config = config
       @source_file_globber = source_file_globber
       @file_with_lines = file_with_lines
