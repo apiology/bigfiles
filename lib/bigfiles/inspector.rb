@@ -14,15 +14,17 @@ module BigFiles
       @io = io
     end
 
-    def find_analyze_and_report_on_files
+    def find_and_analyze
       @source_file_globber.source_files_glob = @config.glob
       @source_file_globber.source_files_exclude_glob = @config.exclude
       file_list = @source_file_globber.source_files_arr
-      files_with_lines = file_list.map do |filename|
+      file_list.map do |filename|
         @file_with_lines.new(filename)
-      end
-      files_with_lines.sort
-                      .reverse[0..(@config.num_files - 1)].each do |file|
+      end.sort.reverse[0..(@config.num_files - 1)]
+    end
+
+    def find_analyze_and_report_on_files
+      find_and_analyze.each do |file|
         @io.puts "#{file.num_lines}: #{file.filename}"
       end
     end
