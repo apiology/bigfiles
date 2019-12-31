@@ -7,19 +7,28 @@ describe BigFiles::QualityConfig do
     described_class.new(tool_name,
                         quality_threshold: quality_threshold)
   end
+  let(:quality_threshold) do
+    instance_double(BigFiles::QualityThreshold)
+  end
+
+  before do
+    allow(quality_threshold).to receive(:threshold) { threshold }
+  end
+
+  describe '#high_water_mark' do
+    subject { quality_config.high_water_mark }
+
+    let(:threshold) { instance_double(Integer) }
+    let(:tool_name) { instance_double(String) }
+
+    it { is_expected.to be threshold }
+  end
 
   describe '#under_limit?' do
     subject { quality_config.under_limit?(total_lines) }
 
     let(:tool_name) { 'bigfiles' }
-    let(:quality_threshold) do
-      instance_double(BigFiles::QualityThreshold)
-    end
     let(:threshold) { 99 }
-
-    before do
-      allow(quality_threshold).to receive(:threshold) { threshold }
-    end
 
     context 'when above threshold' do
       let(:total_lines) { 100 }
