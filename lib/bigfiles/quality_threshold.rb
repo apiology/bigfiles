@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'pronto'
-
 module BigFiles
   # Calculate threshold for quality gem tool
   class QualityThreshold
