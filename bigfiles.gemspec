@@ -29,6 +29,7 @@ Gem::Specification.new do |s|
   s.add_dependency('source_finder', ['>=2'])
   s.add_development_dependency('bundler')
   s.add_development_dependency('pronto')
+  s.add_development_dependency('pronto-bigfiles')
   s.add_development_dependency('pronto-punchlist')
   s.add_development_dependency('pronto-rubocop')
   s.add_development_dependency('quality', '~> 37')

@@ -10,8 +10,8 @@ jobs:
         key: bigfiles-{{ checksum "bigfiles.gemspec" }}-{{ checksum "Gemfile" }}
       - run: gem install bundler
       - run: bundle install --path vendor/bundle --jobs=4
-      - run: bundle exec rake --jobs=4 ci
       - type: cache-save
         key: bigfiles-{{ checksum "bigfiles.gemspec" }}-{{ checksum "Gemfile" }}
         paths:
           - "vendor/bundle"
+      - run: bundle exec rake --jobs=4 ci
