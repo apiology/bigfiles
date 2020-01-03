@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe BigFiles::Config do
   let(:quality_threshold) { instance_double(Quality::Threshold) }
   let(:config) { described_class.new(quality_threshold: quality_threshold) }
