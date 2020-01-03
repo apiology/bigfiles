@@ -49,7 +49,7 @@ module BigFiles
 
     def usage
       @io.puts @option_parser
-      @exiter.exit 1
+      @exiter.exit(1)
     end
   end
 end
