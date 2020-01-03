@@ -27,4 +27,5 @@ Quality::Rake::Task.new do |task|
   # task.verbose = true
 end
 
+desc 'Static analysis and metrics enforcement'
 task quality: %i[pronto update_bundle_audit]
