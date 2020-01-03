@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency('pronto')
   s.add_development_dependency('pronto-punchlist')
   s.add_development_dependency('pronto-rubocop')
-  s.add_development_dependency('quality', '~> 36')
+  s.add_development_dependency('quality', '~> 37')
   s.add_development_dependency('rake')
   s.add_development_dependency('rspec')
   s.add_development_dependency('simplecov')

@@ -1,18 +1,64 @@
 describe BigFiles::Config do
-  describe '#under_limit?' do
-    subject { config.under_limit?(num_lines) }
+  let(:quality_threshold) { instance_double(Quality::Threshold) }
+  let(:config) { described_class.new(quality_threshold: quality_threshold) }
 
-    let(:config) { described_class.new(quality_config: quality_config) }
-    let(:quality_config) { instance_double(BigFiles::QualityConfig) }
-    let(:under_limit_result) { instance_double(Object) }
-    let(:num_lines) { instance_double(Integer) }
+  before do
+    allow(quality_threshold).to receive(:threshold) { high_water_mark }
+  end
 
-    before do
-      allow(quality_config).to receive(:under_limit?).with(num_lines) do
-        under_limit_result
-      end
+  describe '#high_water_mark' do
+    subject { config.high_water_mark }
+
+    let(:high_water_mark) { instance_double(Integer) }
+
+    it { is_expected.to eq(high_water_mark) }
+  end
+
+  describe '#under_limit? when threshold nil' do
+    subject { config.under_limit?(total_lines) }
+
+    let(:high_water_mark) { nil }
+
+    context 'when above threshold' do
+      let(:total_lines) { 301 }
+
+      it { is_expected.to be false }
     end
 
-    it { is_expected.to eq(under_limit_result) }
+    context 'when below threshold' do
+      let(:total_lines) { 299 }
+
+      it { is_expected.to be true }
+    end
+
+    context 'when at threshold' do
+      let(:total_lines) { 300 }
+
+      it { is_expected.to be true }
+    end
+  end
+
+  describe '#under_limit? when threshold set' do
+    subject { config.under_limit?(total_lines) }
+
+    let(:high_water_mark) { 99 }
+
+    context 'when above threshold' do
+      let(:total_lines) { 100 }
+
+      it { is_expected.to be false }
+    end
+
+    context 'when below threshold' do
+      let(:total_lines) { 98 }
+
+      it { is_expected.to be true }
+    end
+
+    context 'when at threshold' do
+      let(:total_lines) { 99 }
+
+      it { is_expected.to be true }
+    end
   end
 end
