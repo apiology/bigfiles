@@ -10,9 +10,21 @@ Quality::Rake::Task.new do |task|
   # .rubocop.yml is pretty regular and a refactor would just make
   # things harder to find.
   task.exclude_files = ['Gemfile.lock', '.rubocop.yml']
-  # cane deprecated in favor of rubocop, reek rarely actionable
+  # cane deprecated in favor of rubocop, reek rarely actionable,
+  # shellcheck unused
   task.skip_tools = %w[reek cane shellcheck]
   task.output_dir = 'metrics'
+  task.punchlist_regexp = 'XX' \
+                          'X|TOD' \
+                          'O|FIXM' \
+                          'E|OPTIMIZ' \
+                          'E|HAC' \
+                          'K|REVIE' \
+                          'W|LATE' \
+                          'R|FIXI' \
+                          'T|xi' \
+                          't '
+  # task.verbose = true
 end
 
 task quality: %i[pronto update_bundle_audit]
