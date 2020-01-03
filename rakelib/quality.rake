@@ -9,7 +9,9 @@ Quality::Rake::Task.new do |task|
   #
   # .rubocop.yml is pretty regular and a refactor would just make
   # things harder to find.
-  task.exclude_files = ['Gemfile.lock', '.rubocop.yml']
+  #
+  # CODE_OF_CONDUCT.md is vendored
+  task.exclude_files = ['Gemfile.lock', '.rubocop.yml', 'CODE_OF_CONDUCT.md']
   # cane deprecated in favor of rubocop, reek rarely actionable,
   # shellcheck unused
   task.skip_tools = %w[reek cane shellcheck]
