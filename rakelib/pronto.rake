@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+desc 'Look for incremental quality issues'
 task :pronto do
   formatter = '-f github_pr' if ENV.key? 'PRONTO_GITHUB_ACCESS_TOKEN'
   if ENV.key? 'TRAVIS_PULL_REQUEST'
