@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bigfiles (0.2.0)
+    bigfiles (0.2.1)
       high_water_mark
       source_finder (>= 2)
 
