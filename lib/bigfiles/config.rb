@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'source_finder/option_parser'
-require 'quality/threshold'
+require 'high_water_mark/threshold'
 
 module BigFiles
   # Configuration for bigfiles gem
@@ -11,7 +11,8 @@ module BigFiles
     attr_reader :help, :num_files, :glob, :exclude, :minimum_high_water_mark
     def initialize(source_finder_option_parser: SourceFinder::OptionParser.new,
                    num_files: Config::NUM_FILES_DEFAULT,
-                   quality_threshold: ::Quality::Threshold.new('bigfiles'),
+                   quality_threshold:
+                     ::HighWaterMark::Threshold.new('bigfiles'),
                    minimum_high_water_mark: 300,
                    help: false,
                    glob: source_finder_option_parser.default_source_files_glob,
