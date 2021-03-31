@@ -2,9 +2,10 @@
 
 require 'optparse'
 
-require_relative 'bigfiles/file_with_lines'
-require_relative 'bigfiles/option_parser'
-require_relative 'bigfiles/inspector'
+require 'bigfiles/file_with_lines'
+require 'bigfiles/option_parser'
+require 'bigfiles/inspector'
+require 'bigfiles/version'
 require 'source_finder/source_file_globber'
 require 'source_finder/option_parser'
 
