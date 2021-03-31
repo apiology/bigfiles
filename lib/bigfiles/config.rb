@@ -9,6 +9,7 @@ module BigFiles
     NUM_FILES_DEFAULT = 3
 
     attr_reader :help, :num_files, :glob, :exclude, :minimum_high_water_mark
+
     def initialize(source_finder_option_parser: SourceFinder::OptionParser.new,
                    num_files: Config::NUM_FILES_DEFAULT,
                    quality_threshold:

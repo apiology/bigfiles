@@ -5,10 +5,9 @@ require_relative 'config'
 module BigFiles
   # Parse options passed to bigfiles command
   class OptionParser
-    def initialize(option_parser_class: ::OptionParser,
+    def initialize(source_finder_option_parser:, option_parser_class: ::OptionParser,
                    io: Kernel,
-                   exiter: Kernel,
-                   source_finder_option_parser:)
+                   exiter: Kernel)
       @option_parser_class = option_parser_class
       @io = io
       @exiter = exiter

@@ -56,7 +56,7 @@ describe BigFiles::BigFiles do
           file = instance_double(BigFiles::FileWithLines,
                                  "#{filename} file_with_lines")
           allow(file_with_lines).to(receive(:new)).with(filename)
-                                .and_return(file)
+            .and_return(file)
           allow_file_queried(file, filename: filename, num_lines: num_lines)
           file
         end
@@ -67,7 +67,7 @@ describe BigFiles::BigFiles do
 
         def expect_file_output(filename, num_lines)
           expect(io).to have_received(:puts).with("#{num_lines}: #{filename}")
-                                            .once
+            .once
         end
 
         def default_glob
@@ -82,16 +82,16 @@ describe BigFiles::BigFiles do
           actual_glob = glob || default_glob
           actual_exclude_glob = exclude_glob || '**/vendor/**'
           allow(source_file_globber).to(receive(:source_files_glob=))
-                                    .with(actual_glob)
+            .with(actual_glob)
           allow(source_file_globber).to(receive(:source_files_exclude_glob=))
-                                    .with(actual_exclude_glob)
+            .with(actual_exclude_glob)
         end
 
         def allow_source_globber_used(glob, exclude_glob)
           file_list = %w[file_1 file_2 file_3 file_4]
           allow_globs_assigned(glob, exclude_glob)
           allow(source_file_globber).to(receive(:source_files_arr))
-                                    .and_return(file_list)
+            .and_return(file_list)
         end
 
         let(:file_1) { allow_file_processed('file_1', 4) }

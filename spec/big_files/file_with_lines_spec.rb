@@ -27,9 +27,9 @@ describe BigFiles::FileWithLines do
 
       def allow_num_lines_calls
         allow(file_with_lines).to(receive(:num_lines))
-                              .and_return(1)
+          .and_return(1)
         allow(another_file_with_lines).to(receive(:num_lines))
-                                      .and_return(2)
+          .and_return(2)
       end
 
       it 'is sortable' do
@@ -44,10 +44,10 @@ describe BigFiles::FileWithLines do
 
       def allow_file_read
         allow(file_opener).to(receive(:open)).with(filename, 'r')
-                          .and_yield(opened_file)
+          .and_yield(opened_file)
         allow(opened_file).to(receive(:each_line))
-                          .and_yield('line 1').and_yield('line 2')
-                          .and_yield('line 3')
+          .and_yield('line 1').and_yield('line 2')
+          .and_yield('line 3')
       end
 
       it 'returns a number' do

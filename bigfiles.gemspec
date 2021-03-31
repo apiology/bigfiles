@@ -1,41 +1,39 @@
-# ; -*-Ruby-*-
+# coding: ascii
 # frozen_string_literal: true
 
-$LOAD_PATH.push File.join(File.dirname(__FILE__), 'lib')
+lib = File.expand_path('lib', __dir__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'bigfiles/version'
 
-Gem::Specification.new do |s|
-  s.name = 'bigfiles'
-  s.version = BigFiles::VERSION
+Gem::Specification.new do |spec|
+  spec.name          = 'bigfiles'
+  spec.version       = BigFiles::VERSION
+  spec.authors       = ['Vince Broz']
+  spec.email         = ['vince@broz.cc']
+  spec.summary       = 'Finds largest source files in a project'
+  spec.homepage      = 'https://github.com/apiology/bigfiles'
+  spec.license       = 'MIT license'
+  spec.required_ruby_version = '>= 2.5'
 
-  s.authors = ['Vince Broz']
-  s.description = 'bigfiles finds the largest source files in your project ' \
-                  'and reports on them'
-  s.email = ['vince@broz.cc']
-  s.executables = ['bigfiles']
-  # s.extra_rdoc_files = ["CHANGELOG", "License.txt"]
-  s.license = 'MIT'
-  s.files = Dir['CODE_OF_CONDUCT.md', 'License.txt', 'README.md',
-                '{lib}/bigfiles.rb',
-                '{lib}/bigfiles/**/*.rb',
-                'bigfiles.gemspec']
-  # s.rdoc_options = ["--main", "README.md"]
-  s.require_paths = ['lib']
-  s.homepage = 'http://github.com/apiology/bigfiles'
-  # s.rubyforge_project = %q{bigfiles}
-  s.rubygems_version = '1.3.6'
-  s.summary = 'Finds largest source files in a project'
+  spec.files = `git ls-files -z`.split("\x0").reject do |f|
+    f.match(%r{^(test|spec|features)/})
+  end
+  spec.bindir        = 'exe'
+  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
+  spec.require_paths = ['lib']
 
-  s.add_dependency('high_water_mark')
-  s.add_dependency('source_finder', ['>=2'])
-  s.add_development_dependency('bundler')
-  s.add_development_dependency('overcommit')
-  s.add_development_dependency('pronto')
-  s.add_development_dependency('pronto-bigfiles')
-  s.add_development_dependency('pronto-punchlist')
-  s.add_development_dependency('pronto-rubocop')
-  s.add_development_dependency('quality', '~> 37')
-  s.add_development_dependency('rake')
-  s.add_development_dependency('rspec')
-  s.add_development_dependency('simplecov')
+  spec.add_dependency('high_water_mark')
+  spec.add_dependency('source_finder', ['>=2'])
+
+  spec.add_development_dependency 'bump'
+  spec.add_development_dependency 'bundler'
+  spec.add_development_dependency 'minitest-profile'
+  spec.add_development_dependency 'mocha'
+  spec.add_development_dependency 'overcommit'
+  spec.add_development_dependency 'rake', '~> 13.0'
+  spec.add_development_dependency 'rspec', '>=3.4'
+  spec.add_development_dependency 'rubocop'
+  spec.add_development_dependency 'rubocop-rake'
+  spec.add_development_dependency 'rubocop-rspec'
+  spec.add_development_dependency 'simplecov'
 end
