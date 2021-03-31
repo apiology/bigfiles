@@ -6,10 +6,10 @@ module BigFiles
   # Parse options passed to bigfiles command
   class OptionParser
     def initialize(source_finder_option_parser:, option_parser_class: ::OptionParser,
-                   io: Kernel,
+                   io_class: Kernel,
                    exiter: Kernel)
       @option_parser_class = option_parser_class
-      @io = io
+      @io_class = io_class
       @exiter = exiter
       @source_finder_option_parser = source_finder_option_parser
     end
@@ -47,7 +47,7 @@ module BigFiles
     end
 
     def usage
-      @io.puts @option_parser
+      @io_class.puts @option_parser
       @exiter.exit(1)
     end
   end

@@ -14,13 +14,13 @@ describe BigFiles::BigFiles do
 
   subject(:bigfiles) do
     described_class.new(args,
-                        io: io,
+                        io_class: io_class,
                         exiter: exiter,
                         file_with_lines: file_with_lines,
                         source_file_globber: source_file_globber)
   end
 
-  let(:io) { class_double(Kernel, 'io') }
+  let(:io_class) { class_double(Kernel, 'io_class') }
   let(:exiter) { class_double(Kernel, 'exiter') }
   let(:file_with_lines) do
     class_double(BigFiles::FileWithLines, 'file_with_lines')
@@ -62,11 +62,11 @@ describe BigFiles::BigFiles do
         end
 
         def allow_file_output(filename, num_lines)
-          allow(io).to receive(:puts).with("#{num_lines}: #{filename}")
+          allow(io_class).to receive(:puts).with("#{num_lines}: #{filename}")
         end
 
         def expect_file_output(filename, num_lines)
-          expect(io).to have_received(:puts).with("#{num_lines}: #{filename}")
+          expect(io_class).to have_received(:puts).with("#{num_lines}: #{filename}")
             .once
         end
 
@@ -88,16 +88,16 @@ describe BigFiles::BigFiles do
         end
 
         def allow_source_globber_used(glob, exclude_glob)
-          file_list = %w[file_1 file_2 file_3 file_4]
+          file_list = %w[file_one file_two file_three file_four]
           allow_globs_assigned(glob, exclude_glob)
           allow(source_file_globber).to(receive(:source_files_arr))
             .and_return(file_list)
         end
 
-        let(:file_1) { allow_file_processed('file_1', 4) }
-        let(:file_2) { allow_file_processed('file_2', 3) }
-        let(:file_3) { allow_file_processed('file_3', 2) }
-        let(:file_4) { allow_file_processed('file_4', 1) }
+        let(:file_one) { allow_file_processed('file_one', 4) }
+        let(:file_two) { allow_file_processed('file_two', 3) }
+        let(:file_three) { allow_file_processed('file_three', 2) }
+        let(:file_four) { allow_file_processed('file_four', 1) }
 
         def sorts_as_smaller_than(file_a, file_b)
           allow(file_a).to receive(:<=>).with(file_b).and_return(-1)
@@ -107,49 +107,49 @@ describe BigFiles::BigFiles do
           allow(file_a).to receive(:<=>).with(file_b).and_return(1)
         end
 
-        def allow_file_1_sorted
-          sorts_as_larger_than(file_1, file_2)
-          sorts_as_larger_than(file_1, file_3)
-          sorts_as_larger_than(file_1, file_4)
+        def allow_file_one_sorted
+          sorts_as_larger_than(file_one, file_two)
+          sorts_as_larger_than(file_one, file_three)
+          sorts_as_larger_than(file_one, file_four)
         end
 
-        def allow_file_2_sorted
-          sorts_as_smaller_than(file_2, file_1)
-          sorts_as_larger_than(file_2, file_3)
-          sorts_as_larger_than(file_2, file_4)
+        def allow_file_two_sorted
+          sorts_as_smaller_than(file_two, file_one)
+          sorts_as_larger_than(file_two, file_three)
+          sorts_as_larger_than(file_two, file_four)
         end
 
-        def allow_file_3_sorted
-          sorts_as_smaller_than(file_3, file_1)
-          sorts_as_smaller_than(file_3, file_2)
-          sorts_as_larger_than(file_3, file_4)
+        def allow_file_three_sorted
+          sorts_as_smaller_than(file_three, file_one)
+          sorts_as_smaller_than(file_three, file_two)
+          sorts_as_larger_than(file_three, file_four)
         end
 
-        def allow_file_4_sorted
-          sorts_as_smaller_than(file_4, file_1)
-          sorts_as_smaller_than(file_4, file_2)
-          sorts_as_smaller_than(file_4, file_3)
+        def allow_file_four_sorted
+          sorts_as_smaller_than(file_four, file_one)
+          sorts_as_smaller_than(file_four, file_two)
+          sorts_as_smaller_than(file_four, file_three)
         end
 
         def allow_file_comparisons
-          allow_file_1_sorted
-          allow_file_2_sorted
-          allow_file_3_sorted
-          allow_file_4_sorted
+          allow_file_one_sorted
+          allow_file_two_sorted
+          allow_file_three_sorted
+          allow_file_four_sorted
         end
 
         def allow_files_output
-          allow_file_output('file_1', 4)
-          allow_file_output('file_2', 3)
-          allow_file_output('file_3', 2)
-          allow_file_output('file_4', 1) if num_files && num_files.to_i >= 4
+          allow_file_output('file_one', 4)
+          allow_file_output('file_two', 3)
+          allow_file_output('file_three', 2)
+          allow_file_output('file_four', 1) if num_files && num_files.to_i >= 4
         end
 
         def expect_files_output
-          expect_file_output('file_1', 4)
-          expect_file_output('file_2', 3)
-          expect_file_output('file_3', 2)
-          expect_file_output('file_4', 1) if num_files && num_files.to_i >= 4
+          expect_file_output('file_one', 4)
+          expect_file_output('file_two', 3)
+          expect_file_output('file_three', 2)
+          expect_file_output('file_four', 1) if num_files && num_files.to_i >= 4
         end
 
         it 'runs' do

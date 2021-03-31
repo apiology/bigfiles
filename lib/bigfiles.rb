@@ -14,7 +14,7 @@ module BigFiles
   # Simple tool to find the largest source files in your project.
   class BigFiles
     def initialize(args,
-                   io: Kernel,
+                   io_class: Kernel,
                    exiter: Kernel,
                    file_with_lines: FileWithLines,
                    source_file_globber: SourceFinder::SourceFileGlobber.new,
@@ -24,7 +24,7 @@ module BigFiles
                    bigfiles_option_parser:
                      ::BigFiles::OptionParser
                        .new(option_parser_class: option_parser_class,
-                            io: io,
+                            io_class: io_class,
                             exiter: exiter,
                             source_finder_option_parser:
                               source_finder_option_parser),
@@ -34,7 +34,7 @@ module BigFiles
       @inspector = inspector_class.new(source_file_globber: source_file_globber,
                                        config: config,
                                        file_with_lines: file_with_lines,
-                                       io: io)
+                                       io_class: io_class)
     end
 
     def run

@@ -1,4 +1,6 @@
 ---
+inherit_from: .rubocop_todo.yml
+
 Layout/LineLength:
   Max: 120
 
@@ -97,6 +99,7 @@ AllCops:
   TargetRubyVersion: 2.5
   Exclude:
     - 'bin/*'
+    - 'feature/samples/**/*'
 
 require:
   - rubocop-rake
