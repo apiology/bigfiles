@@ -3,7 +3,7 @@
 require 'simplecov'
 
 SimpleCov.start do
-  # this dir used by TravisCI
+  # this dir used by CircleCI
   add_filter 'vendor'
 end
 SimpleCov.refuse_coverage_drop
