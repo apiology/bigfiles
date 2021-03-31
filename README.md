@@ -1,6 +1,6 @@
 # BigFiles
 
-[![Build Status](https://travis-ci.org/apiology/bigfiles.svg?branch=master)](https://travis-ci.org/apiology/bigfiles)
+[![Build Status](https://travis-ci.org/apiology/bigfiles.svg?branch=main)](https://travis-ci.org/apiology/bigfiles)
 
 Simple tool to find the largest source files in your project - maybe
 to target for refactoring!
@@ -56,4 +56,4 @@ The gem is available as open source under the terms of the
 
 Everyone interacting in the Pronto::Punchlist project’s codebases,
 issue trackers, chat rooms and mailing lists is expected to follow the
-[code of conduct](https://github.com/apiology/bigfiles/blob/master/CODE_OF_CONDUCT.md).
+[code of conduct](https://github.com/apiology/bigfiles/blob/main/CODE_OF_CONDUCT.md).
