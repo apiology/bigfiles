@@ -1,7 +1,6 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
-gem 'bundler'
-gem 'rake'
-gem 'quality'
-gem 'rspec', '>=3'
-gem 'simplecov'
+# Specify your gem's dependencies in bigfiles.gemspec
+gemspec

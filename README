@@ -1,7 +1,0 @@
-Simple tool to find the largest source files in your project.
-
-To test quality:
-  rake localtest
-
-To run tests alone:
-  rake spec
