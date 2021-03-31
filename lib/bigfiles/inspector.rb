@@ -10,11 +10,11 @@ module BigFiles
     def initialize(config: Config.new,
                    source_file_globber: SourceFinder::SourceFileGlobber.new,
                    file_with_lines: FileWithLines,
-                   io: Kernel)
+                   io_class: Kernel)
       @config = config
       @source_file_globber = source_file_globber
       @file_with_lines = file_with_lines
-      @io = io
+      @io_class = io_class
     end
 
     def find_and_analyze
@@ -28,7 +28,7 @@ module BigFiles
 
     def find_analyze_and_report_on_files
       find_and_analyze.each do |file|
-        @io.puts "#{file.num_lines}: #{file.filename}"
+        @io_class.puts "#{file.num_lines}: #{file.filename}"
       end
     end
   end

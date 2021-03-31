@@ -6,13 +6,13 @@ require 'bigfiles'
 describe BigFiles::BigFiles do
   subject(:bigfiles) do
     described_class.new(args,
-                        io: io,
+                        io_class: io_class,
                         exiter: exiter,
                         file_with_lines: file_with_lines,
                         source_file_globber: source_file_globber)
   end
 
-  let(:io) { class_double(Kernel, 'io') }
+  let(:io_class) { class_double(Kernel, 'io_class') }
   let(:exiter) { class_double(Kernel, 'exiter') }
   let(:file_with_lines) do
     class_double(BigFiles::FileWithLines, 'file_with_lines')
@@ -26,7 +26,7 @@ describe BigFiles::BigFiles do
 
     describe '.run' do
       before do
-        allow(io).to receive(:puts)
+        allow(io_class).to receive(:puts)
         allow(exiter).to receive(:exit)
       end
 
