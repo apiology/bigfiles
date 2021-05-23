@@ -138,8 +138,9 @@ WARNING: seems you still have not added 'pyenv' to the load path.
 # Load pyenv automatically by adding
 # the following to ~/.bashrc:
 
-export PATH="$HOME/.pyenv/bin:$PATH"
-eval "$(pyenv init -)"
+export PYENV_ROOT="${HOME}/.pyenv"
+export PATH="${PYENV_ROOT}/bin:$PATH"
+eval "$(pyenv init --path)"
 eval "$(pyenv virtualenv-init -)"
 EOF
     fi
@@ -153,8 +154,11 @@ set_pyenv_env_variables() {
   #
   # https://app.circleci.com/pipelines/github/apiology/cookiecutter-pypackage/15/workflows/10506069-7662-46bd-b915-2992db3f795b/jobs/15
   set +u
-  export PATH="${HOME}/.pyenv/bin:$PATH"
+  export PYENV_ROOT="${HOME}/.pyenv"
+  export PATH="${PYENV_ROOT}/bin:$PATH"
+  # TODO: This can be removed once Homebrew updates pyenv past 1.2.27
   eval "$(pyenv init -)"
+  eval "$(pyenv init --path)"
   eval "$(pyenv virtualenv-init -)"
   set -u
 }
@@ -257,11 +261,30 @@ ensure_shellcheck() {
   fi
 }
 
+ensure_overcommit() {
+  # don't run if we're in the middle of a cookiecutter child project
+  # test, or otherwise don't have a Git repo to install hooks into...
+  if [ -d .git ]
+  then
+    bundle exec overcommit --install
+  else
+    >&2 echo 'Not in a git repo; not installing git hooks'
+  fi
+}
+
+ensure_rugged_packages_installed() {
+  install_package icu4c libicu-dev # needed by rugged, needed by undercover
+  install_package pkg-config # needed by rugged, needed by undercover
+  install_package cmake # needed by rugged, needed by undercover
+}
+
 ensure_rbenv
 
 ensure_ruby_versions
 
 set_ruby_local_version
+
+ensure_rugged_packages_installed
 
 ensure_bundle
 
@@ -276,3 +299,5 @@ ensure_pip
 ensure_python_requirements
 
 ensure_shellcheck
+
+ensure_overcommit
