@@ -1,6 +1,7 @@
 # BigFiles
 
-[![Build Status](https://travis-ci.org/apiology/bigfiles.svg?branch=main)](https://travis-ci.org/apiology/bigfiles)
+[![CircleCI](https://circleci.com/gh/apiology/bigfiles.svg?style=svg)](https://circleci.com/gh/apiology/bigfiles)
+
 
 Simple tool to find the largest source files in your project - maybe
 to target for refactoring!
