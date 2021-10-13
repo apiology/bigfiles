@@ -72,10 +72,10 @@ describe BigFiles::BigFiles do
 
         def default_glob
           '{Dockerfile,Rakefile,{*,.*}.{c,clj,cljs,cpp,gemspec,groovy,html,' \
-          'java,js,json,py,rake,rb,scala,sh,swift,yml},{app,config,db,' \
-          'feature,lib,spec,src,test,tests,vars,www}/**/{*,.*}.{c,clj,' \
-          'cljs,cpp,gemspec,groovy,html,java,js,json,py,rake,rb,scala,' \
-          'sh,swift,yml}}'
+            'java,js,json,py,rake,rb,scala,sh,swift,yml},{app,config,db,' \
+            'feature,lib,spec,src,test,tests,vars,www}/**/{*,.*}.{c,clj,' \
+            'cljs,cpp,gemspec,groovy,html,java,js,json,py,rake,rb,scala,' \
+            'sh,swift,yml}}'
         end
 
         def allow_globs_assigned(glob, exclude_glob)
