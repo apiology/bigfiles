@@ -109,6 +109,7 @@ AllCops:
   Exclude:
     - 'bin/*'
     - 'feature/samples/**/*'
+    - 'vendor/**/*'
 
 require:
   - rubocop-rake
