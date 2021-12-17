@@ -2,5 +2,5 @@
 
 # Tool to find the largest source files in your project
 module BigFiles
-  VERSION = '0.2.1'
+  VERSION = '0.2.2'
 end

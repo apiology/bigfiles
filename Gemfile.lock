@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bigfiles (0.2.1)
+    bigfiles (0.2.2)
       high_water_mark
       source_finder (>= 2)
 
@@ -14,6 +14,7 @@ GEM
     coderay (1.1.3)
     diff-lcs (1.4.4)
     docile (1.4.0)
+    ffi (1.15.4-java)
     high_water_mark (0.1.0)
     imagen (0.1.8)
       parser (>= 2.5, != 2.5.1.1)
@@ -29,6 +30,10 @@ GEM
     pry (0.14.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
+    pry (0.14.1-java)
+      coderay (~> 1.1)
+      method_source (~> 1.0)
+      spoon (~> 0.0)
     rainbow (3.0.0)
     rake (13.0.6)
     regexp_parser (2.1.1)
@@ -71,6 +76,8 @@ GEM
     simplecov-lcov (0.8.0)
     simplecov_json_formatter (0.1.3)
     source_finder (3.2.1)
+    spoon (0.0.6)
+      ffi
     undercover (0.4.3)
       imagen (>= 0.1.8)
       rainbow (>= 2.1, < 4.0)
