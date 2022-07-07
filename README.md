@@ -58,3 +58,15 @@ The gem is available as open source under the terms of the
 Everyone interacting in the Pronto::Punchlist project’s codebases,
 issue trackers, chat rooms and mailing lists is expected to follow the
 [code of conduct](https://github.com/apiology/bigfiles/blob/main/CODE_OF_CONDUCT.md).
+
+## Contributions
+
+This project, as with all others, rests on the shoulders of a broad
+ecosystem supported by many volunteers doing thankless work, along
+with specific contributors.
+
+In particular I'd like to call out:
+
+* [Audrey Roy Greenfeld](https://github.com/audreyfeldroy) for the
+  cookiecutter tool and associated examples, which keep my many
+  projects building with shared boilerplate with a minimum of fuss.
