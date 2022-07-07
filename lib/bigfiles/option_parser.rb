@@ -42,8 +42,7 @@ module BigFiles
         options = setup_options(opts)
         @option_parser = opts
       end.parse!(args)
-      Config.new(**options,
-                 source_finder_option_parser: @source_finder_option_parser)
+      options
     end
 
     def usage

@@ -40,6 +40,34 @@ $ bigfiles
 $
 ```
 
+## Options
+
+You can control what files are included and excluded, and how many files are reported:
+
+```sh
+$ bigfiles --help
+Usage: bigfiles [options]
+    -g, --glob glob here             Which files to parse - default is {Dockerfile,Rakefile,{*,.*}.{c,clj,cljs,cpp,gemspec,groovy,html,java,js,json,py,rake,rb,scala,sh,swift,yml},{app,config,db,feature,lib,spec,src,test,tests,vars,www}/**/{*,.*}.{c,clj,cljs,cpp,gemspec,groovy,html,java,js,json,py,rake,rb,scala,sh,swift,yml}}
+    -e, --exclude-glob glob here     Files to exclude - default is none
+    -h, --help                       This message
+    -n, --num-files number-here      Top number of files to show--default 3
+$
+```
+
+## Configuration
+
+You can set different defaults for the above in a `.bigfiles.yml` in the current directory:
+
+```yaml
+---
+bigfiles:
+  num_files: 8
+  include:
+    glob: '**/*.my-favorite-extension'
+  exclude:
+    glob: fix.sh
+```
+
 ## Contributing
 
 Bug reports and pull requests are welcome on
