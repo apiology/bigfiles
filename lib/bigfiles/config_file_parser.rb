@@ -7,8 +7,12 @@ module BigFiles
   class ConfigFileParser
     attr_reader :project_config_filename
 
-    def initialize(project_config_filename = '.bigfiles.yml')
+    def initialize(project_config_filename = '.bigfiles.yml',
+                   yaml_class: YAML,
+                   file_class: File)
       @project_config_filename = project_config_filename
+      @yaml_class = yaml_class
+      @file_class = file_class
     end
 
     def parse_config_files
@@ -28,10 +32,10 @@ module BigFiles
     end
 
     def parse_project_config
-      return {} unless File.file? project_config_filename
+      return {} unless @file_class.file? project_config_filename
 
       project_config = {}
-      raw_project_config = YAML.load_file(project_config_filename)
+      raw_project_config = @yaml_class.load_file(project_config_filename)
       exclude = item(raw_project_config, 'exclude', 'glob')
       project_config[:exclude] = exclude unless exclude.nil?
       glob = item(raw_project_config, 'include', 'glob')
