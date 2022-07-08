@@ -3,6 +3,7 @@
 require 'spec_helper'
 require 'bigfiles'
 require 'bigfiles/file_with_lines'
+require 'bigfiles/config_file_parser'
 
 describe BigFiles::BigFiles do
   # Until this spec is decoupled from source_finder changes, make sure
@@ -17,6 +18,7 @@ describe BigFiles::BigFiles do
                         io_class: io_class,
                         exiter: exiter,
                         file_with_lines: file_with_lines,
+                        config_file_parser: config_file_parser,
                         source_file_globber: source_file_globber)
   end
 
@@ -27,6 +29,12 @@ describe BigFiles::BigFiles do
   end
   let(:source_file_globber) do
     instance_double(SourceFinder::SourceFileGlobber, 'source_file_globber')
+  end
+  let(:config_file_parser) do
+    config_file_parser = instance_double(BigFiles::ConfigFileParser, 'config_file_parser')
+    # dummy this out for this spec
+    allow(config_file_parser).to receive(:parse_config_files).and_return({})
+    config_file_parser
   end
 
   [{ glob: nil, exclude: nil },

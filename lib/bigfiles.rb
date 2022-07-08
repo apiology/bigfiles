@@ -3,7 +3,9 @@
 require 'optparse'
 
 require 'bigfiles/file_with_lines'
+require 'bigfiles/config_file_parser'
 require 'bigfiles/option_parser'
+require 'bigfiles/config'
 require 'bigfiles/inspector'
 require 'bigfiles/version'
 require 'source_finder/source_file_globber'
@@ -21,6 +23,7 @@ module BigFiles
                    inspector_class: Inspector,
                    option_parser_class: ::OptionParser,
                    source_finder_option_parser: SourceFinder::OptionParser.new,
+                   yaml_class: YAML,
                    bigfiles_option_parser:
                      ::BigFiles::OptionParser
                        .new(option_parser_class: option_parser_class,
@@ -28,7 +31,11 @@ module BigFiles
                             exiter: exiter,
                             source_finder_option_parser:
                               source_finder_option_parser),
-                   config: bigfiles_option_parser.parse_options(args))
+                   config_file_parser: ::BigFiles::ConfigFileParser.new(yaml_class: yaml_class),
+                   raw_config: config_file_parser.parse_config_files
+                     .merge(bigfiles_option_parser.parse_options(args)),
+                   config: Config.new(**raw_config))
+
       @bigfiles_option_parser = bigfiles_option_parser
       @config = config
       @inspector = inspector_class.new(source_file_globber: source_file_globber,
