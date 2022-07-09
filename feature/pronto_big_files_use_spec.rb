@@ -48,7 +48,7 @@ describe BigFiles do
   end
 
   it 'continues to behave like it did' do
-    expect(file_with_line).not_to eq(nil)
+    expect(file_with_line).not_to be_nil
     expect(under_limit).to be(true)
   end
 end
