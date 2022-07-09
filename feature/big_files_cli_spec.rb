@@ -11,15 +11,13 @@ describe BigFiles do
   end
 
   let(:usage) do
-    "Usage: bigfiles [options]\n" \
-      "    -g, --glob glob here             " \
-      "Which files to parse - default is #{default_glob}" \
-      "\n" \
-      "    -e, --exclude-glob glob here     " \
-      "Files to exclude - default is none\n" \
-      "    -h, --help                       This message\n" \
-      "    -n, --num-files number-here      " \
-      "Top number of files to show--default 3\n"
+    <<~HEREDOC
+      Usage: bigfiles [options]
+          -g, --glob glob here             Which files to parse - default is #{default_glob}
+          -e, --exclude-glob glob here     Files to exclude - default is none
+          -h, --help                       This message
+          -n, --num-files number-here      Top number of files to show--default 3
+    HEREDOC
   end
 
   it 'starts up with no arguments' do
