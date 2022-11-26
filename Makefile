@@ -15,7 +15,17 @@ export PRINT_HELP_PYSCRIPT
 help:
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
-default: localtest ## run default tests and quality
+default: clean-coverage test coverage clean-typecoverage typecheck typecoverage quality ## run default typechecking, tests and quality
+
+typecheck: ## validate types in code and configuration
+
+citypecheck: typecheck ## Run type check from CircleCI
+
+typecoverage: typecheck ## Run type checking and then ratchet coverage in metrics/
+
+clean-typecoverage: ## Clean out type-related coverage previous results to avoid flaky results
+
+citypecoverage: typecoverage ## Run type checking, ratchet coverage, and then complain if ratchet needs to be committed
 
 requirements_dev.txt.installed: requirements_dev.txt
 	pip install -q --disable-pip-version-check -r requirements_dev.txt
@@ -41,7 +51,7 @@ clean: clear_metrics ## remove all built artifacts
 
 test: spec ## run tests quickly
 
-typecheck: ## validate types in code and configuration
+citest: test ## Run unit tests from CircleCI
 
 overcommit: ## run precommit quality checks
 	bundle exec overcommit --run
@@ -59,6 +69,16 @@ localtest: ## run default local actions
 
 repl:  ## Load up bigfiles in pry
 	@bundle exec rake repl
+
+clean-coverage:
+	@bundle exec rake clear_metrics
+
+coverage: test report-coverage ## check code coverage
+	@bundle exec rake undercover
+
+report-coverage: test ## Report summary of coverage to stdout, and generate HTML, XML coverage report
+
+cicoverage: coverage ## check code coverage
 
 update_from_cookiecutter: ## Bring in changes from template project used to create this repo
 	bundle exec overcommit --uninstall

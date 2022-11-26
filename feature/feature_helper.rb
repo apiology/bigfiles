@@ -7,16 +7,16 @@ require 'bigfiles'
 # already installed.
 root_dir = RSpec::Core::RubyProject.root
 exec_dir = File.join(File::SEPARATOR, root_dir, 'bin')
-ENV['PATH'] = [exec_dir, ENV['PATH']].join(File::PATH_SEPARATOR)
+ENV['PATH'] = [exec_dir, ENV.fetch('PATH')].join(File::PATH_SEPARATOR)
 
 # Courtesy of:
 # https://raw.github.com/cupakromer/tao-of-tdd/master/adder/spec/support/
 #    capture_exec.rb
 def exec_io(*cmd)
   cmd = cmd.flatten
-  out_err, _exit_code = Open3.capture2e(*cmd)
+  all_out, _exit_code = Open3.capture2e(*cmd)
 
-  out_err
+  all_out
 end
 
 RSpec.configure do |config|

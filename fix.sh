@@ -69,7 +69,18 @@ ensure_rbenv() {
 
 latest_ruby_version() {
   major_minor=${1}
-  rbenv install --list 2>/dev/null | grep "^${major_minor}."
+
+  # Double check that this command doesn't error out under -e
+  rbenv install --list >/dev/null 2>&1
+
+  # not sure why, but 'rbenv install --list' below exits with error code
+  # 1...after providing the same output the previous line gave when it
+  # exited with error code 0.
+  #
+  # https://github.com/rbenv/rbenv/issues/1441
+  set +e
+  rbenv install --list 2>/dev/null | cat | grep "^${major_minor}."
+  set -e
 }
 
 ensure_dev_library() {
@@ -91,12 +102,20 @@ ensure_ruby_build_requirements() {
   ensure_dev_library openssl/ssl.h openssl libssl-dev
 }
 
+ensure_latest_ruby_build_definitions() {
+  ensure_rbenv
+
+  git -C "$(rbenv root)"/plugins/ruby-build pull
+}
+
 # You can find out which feature versions are still supported / have
 # been release here: https://www.ruby-lang.org/en/downloads/
 ensure_ruby_versions() {
+  ensure_latest_ruby_build_definitions
+
   # You can find out which feature versions are still supported / have
   # been release here: https://www.ruby-lang.org/en/downloads/
-  ruby_versions="$(latest_ruby_version 2.6)"
+  ruby_versions="$(latest_ruby_version 2.7)"
 
   echo "Latest Ruby versions: ${ruby_versions}"
 
@@ -169,7 +188,7 @@ ensure_bundle() {
   #
   # This affects nokogiri, which will try to reinstall itself in
   # Docker builds where it's already installed if this is not run.
-  for platform in x86_64-darwin-20 x86_64-linux
+  for platform in x86_64-darwin-21 x86_64-linux
   do
     grep "${platform:?}" Gemfile.lock >/dev/null 2>&1 || bundle lock --add-platform "${platform:?}"
   done
