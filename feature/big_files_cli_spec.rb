@@ -32,7 +32,7 @@ describe BigFiles do
     context "with #{type}" do
       let(:command) do
         "cd feature/samples/#{type} && " \
-          "RUBYLIB=`pwd`/../../lib:\"\$RUBYLIB\" bigfiles " \
+          "RUBYLIB=`pwd`/../../lib:\"$RUBYLIB\" bigfiles " \
           "--glob '*.{rb,swift,zorb}' " \
           "--exclude-glob " \
           "'{excluded.rb}'"

@@ -34,7 +34,7 @@ describe BigFiles::FileWithLines do
 
       it 'is sortable' do
         allow_num_lines_calls
-        expect(file_with_lines.<=>(another_file_with_lines))
+        expect((file_with_lines <=> another_file_with_lines))
           .to eq(-1)
       end
     end
